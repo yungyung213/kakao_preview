@@ -19,6 +19,7 @@ const BRANDS = {
 let state = {
   brand: "DEFENDER",
   all: false,
+  formFocused: false,
   active: 0,
   cards: [makeCard(0), makeCard(1)],
   toastTimer: null,
@@ -127,7 +128,7 @@ function renderCards() {
         .join("");
 
       return `
-        <article class="card ${index === state.active ? "active" : ""}" tabindex="0" data-index="${index}">
+        <article class="card ${index === state.active ? "active" : ""} ${state.formFocused && index === state.active ? "editing" : ""}" tabindex="0" data-index="${index}">
           <div class="img">${imageHtml}</div>
           <div class="content">
             <h2 class="title">${escapeHtml(card.title || DEFAULT_TITLE)}</h2>
@@ -289,7 +290,10 @@ function addCard() {
 
   state.cards.push(makeCard(state.cards.length));
   state.active = state.cards.length - 1;
-  renderAll();
+  $("formPanel").addEventListener("focusin", () => { state.formFocused = true; renderCards(); });
+$("formPanel").addEventListener("focusout", (event) => { if (!$("formPanel").contains(event.relatedTarget)) { state.formFocused = false; renderCards(); } });
+document.addEventListener("mousedown", (event) => { if (!$("formPanel").contains(event.target)) { state.formFocused = false; renderCards(); } });
+renderAll();
 
   requestAnimationFrame(() => {
     state.active = state.cards.length - 1;
@@ -310,7 +314,10 @@ function removeCard() {
   const targetIndex = Math.max(0, state.active - 1);
   state.cards.splice(state.active, 1);
   state.active = Math.min(targetIndex, state.cards.length - 1);
-  renderAll();
+  $("formPanel").addEventListener("focusin", () => { state.formFocused = true; renderCards(); });
+$("formPanel").addEventListener("focusout", (event) => { if (!$("formPanel").contains(event.relatedTarget)) { state.formFocused = false; renderCards(); } });
+document.addEventListener("mousedown", (event) => { if (!$("formPanel").contains(event.target)) { state.formFocused = false; renderCards(); } });
+renderAll();
 
   requestAnimationFrame(() => {
     state.active = Math.min(targetIndex, state.cards.length - 1);
@@ -335,7 +342,10 @@ function addCta() {
 
   activeCard().ctas.push(makeCta());
   $("ctaField").classList.remove("isErr");
-  renderAll();
+  $("formPanel").addEventListener("focusin", () => { state.formFocused = true; renderCards(); });
+$("formPanel").addEventListener("focusout", (event) => { if (!$("formPanel").contains(event.relatedTarget)) { state.formFocused = false; renderCards(); } });
+document.addEventListener("mousedown", (event) => { if (!$("formPanel").contains(event.target)) { state.formFocused = false; renderCards(); } });
+renderAll();
 }
 
 function removeCta(index) {
@@ -346,7 +356,10 @@ function removeCta(index) {
 
   activeCard().ctas.splice(index, 1);
   $("ctaField").classList.remove("isErr");
-  renderAll();
+  $("formPanel").addEventListener("focusin", () => { state.formFocused = true; renderCards(); });
+$("formPanel").addEventListener("focusout", (event) => { if (!$("formPanel").contains(event.relatedTarget)) { state.formFocused = false; renderCards(); } });
+document.addEventListener("mousedown", (event) => { if (!$("formPanel").contains(event.target)) { state.formFocused = false; renderCards(); } });
+renderAll();
 }
 
 function clearDefault(field) {
@@ -394,7 +407,10 @@ $("imageInput").addEventListener("change", (event) => {
   const reader = new FileReader();
   reader.onload = (readerEvent) => {
     activeCard().image = readerEvent.target.result;
-    renderAll();
+    $("formPanel").addEventListener("focusin", () => { state.formFocused = true; renderCards(); });
+$("formPanel").addEventListener("focusout", (event) => { if (!$("formPanel").contains(event.relatedTarget)) { state.formFocused = false; renderCards(); } });
+document.addEventListener("mousedown", (event) => { if (!$("formPanel").contains(event.target)) { state.formFocused = false; renderCards(); } });
+renderAll();
   };
   reader.readAsDataURL(file);
   event.target.value = "";
@@ -430,6 +446,9 @@ $("bodyInput").addEventListener("input", (event) => {
   renderDots();
 });
 
+$("formPanel").addEventListener("focusin", () => { state.formFocused = true; renderCards(); });
+$("formPanel").addEventListener("focusout", (event) => { if (!$("formPanel").contains(event.relatedTarget)) { state.formFocused = false; renderCards(); } });
+document.addEventListener("mousedown", (event) => { if (!$("formPanel").contains(event.target)) { state.formFocused = false; renderCards(); } });
 renderAll();
 
 /*

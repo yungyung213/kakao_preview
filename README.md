@@ -1,5 +1,5 @@
-Kakao Carousel Preview v15
+Kakao Carousel Preview v16
 
 업로드 파일: index.html, style.css, script.js
 
-v15: 이미지 안내 문구 중앙 정렬.
+v16: 2MB 초과 안내 중앙 노출, 입력 중인 카드 미리보기 외곽선 표시.
