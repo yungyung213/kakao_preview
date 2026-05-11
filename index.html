@@ -13,21 +13,30 @@
         <h1>카카오 캐러셀 피드 미리보기</h1>
         <p>이미지, 타이틀, 본문, CTA를 입력하면 카카오톡 형태로 바로 확인할 수 있습니다.</p>
       </div>
-      <button type="button" class="primary-btn" id="addCardBtn">
-        <span>+</span> 캐러셀 추가
-      </button>
+
+      <div class="header-actions">
+        <button type="button" class="secondary-btn" id="toggleAllViewBtn">한번에 보기</button>
+        <button type="button" class="primary-btn" id="addCardBtn">
+          <span>+</span> 캐러셀 추가
+        </button>
+      </div>
     </header>
 
     <div class="toast" id="toast" role="alert" aria-live="polite"></div>
 
     <main class="layout">
       <section class="preview-panel" aria-label="카카오톡 미리보기">
-        <div class="brand-row">
-          <div class="brand-logo">DEFENDER</div>
-          <div class="brand-name">(광고)DEFENDER</div>
+        <div class="message-head">
+          <div class="brand-logo" id="brandLogo">DEFENDER</div>
+          <div class="brand-name" id="previewBrandName">(광고)DEFENDER</div>
         </div>
 
-        <div class="carousel" id="previewCarousel"></div>
+        <div class="carousel-shell" id="carouselShell">
+          <button type="button" class="nav-btn nav-prev" id="prevCardBtn" aria-label="이전 카드">‹</button>
+          <div class="carousel" id="previewCarousel"></div>
+          <button type="button" class="nav-btn nav-next" id="nextCardBtn" aria-label="다음 카드">›</button>
+        </div>
+
         <div class="dots" id="dots"></div>
       </section>
 
@@ -44,6 +53,15 @@
 
         <div class="form-body">
           <div class="field">
+            <label for="brandSelect">브랜드명 <span>*</span></label>
+            <select id="brandSelect" class="select-input">
+              <option value="DEFENDER">(광고)DEFENDER</option>
+              <option value="Range Rover">(광고)Range Rover</option>
+              <option value="Discovery">(광고)Discovery</option>
+            </select>
+          </div>
+
+          <div class="field">
             <label>이미지 <span>*</span></label>
             <div class="image-upload-grid">
               <button type="button" class="image-upload" id="imageUploadBtn">
@@ -55,7 +73,6 @@
               </button>
               <div class="guide-box">
                 <strong>권장 사이즈: 600 × 800px</strong>
-                <p>업로드한 이미지는 미리보기에서 600 × 800 비율로 고정 노출됩니다.</p>
                 <input type="file" accept="image/*" id="imageInput" hidden />
               </div>
             </div>
