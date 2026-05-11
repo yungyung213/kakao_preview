@@ -24,17 +24,15 @@
 
     <div class="toast" id="toast" role="alert" aria-live="polite"></div>
 
-    <main class="layout">
-      <section class="preview-panel" aria-label="카카오톡 미리보기">
+    <main class="layout" id="mainLayout">
+      <section class="preview-panel" id="previewPanel" aria-label="카카오톡 미리보기">
         <div class="message-head">
           <div class="brand-logo" id="brandLogo">DEFENDER</div>
           <div class="brand-name" id="previewBrandName">(광고)DEFENDER</div>
         </div>
 
         <div class="carousel-shell" id="carouselShell">
-          <button type="button" class="nav-btn nav-prev" id="prevCardBtn" aria-label="이전 카드">‹</button>
           <div class="carousel" id="previewCarousel"></div>
-          <button type="button" class="nav-btn nav-next" id="nextCardBtn" aria-label="다음 카드">›</button>
         </div>
 
         <div class="dots" id="dots"></div>
@@ -100,12 +98,13 @@
             </p>
           </div>
 
-          <div class="field">
+          <div class="field" id="ctaField">
             <div class="cta-head">
               <label>CTA 버튼 <span>*</span></label>
               <button type="button" class="dark-small-btn" id="addCtaBtn">CTA 추가</button>
             </div>
             <div id="ctaForms" class="cta-list"></div>
+            <p class="error-text" id="ctaError">CTA 버튼은 최대 2개까지 추가할 수 있습니다.</p>
           </div>
         </div>
       </section>

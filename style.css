@@ -23,7 +23,7 @@ select {
 
 .page {
   width: 100%;
-  max-width: 1420px;
+  max-width: 1440px;
   margin: 0 auto;
   padding: 18px;
 }
@@ -41,6 +41,7 @@ select {
   font-size: 22px;
   line-height: 1.25;
   letter-spacing: -0.4px;
+  font-weight: 650;
 }
 
 .header p {
@@ -97,19 +98,31 @@ select {
 
 .layout {
   display: grid;
-  grid-template-columns: minmax(690px, 1.35fr) minmax(380px, 0.85fr);
+  grid-template-columns: minmax(720px, 1.45fr) minmax(380px, 0.75fr);
   gap: 18px;
   align-items: start;
+}
+
+.layout.all-view {
+  grid-template-columns: 1fr;
+}
+
+.layout.all-view .form-panel {
+  max-width: 760px;
 }
 
 .preview-panel {
   position: sticky;
   top: 18px;
   overflow: hidden;
-  padding: 18px 22px 18px;
-  border-radius: 20px;
+  padding: 18px 26px 20px;
+  border-radius: 18px;
   background: #c9d4e2;
   box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+}
+
+.layout.all-view .preview-panel {
+  position: static;
 }
 
 .message-head {
@@ -129,8 +142,8 @@ select {
   border-radius: 999px;
   background: #fff;
   color: #111827;
-  font-size: 6.8px;
-  font-weight: 800;
+  font-size: 6.6px;
+  font-weight: 700;
   letter-spacing: -0.45px;
   line-height: 1;
   white-space: nowrap;
@@ -138,54 +151,40 @@ select {
 }
 
 .brand-logo.range {
-  font-size: 5px;
+  font-size: 4.7px;
   letter-spacing: -0.55px;
 }
 
 .brand-logo.discovery {
-  font-size: 5.8px;
+  font-size: 5.4px;
   letter-spacing: -0.5px;
 }
 
 .brand-name {
   color: #0f172a;
-  font-size: 18px;
-  font-weight: 650;
+  font-size: 17px;
+  font-weight: 400;
   letter-spacing: -0.5px;
-}
-
-.carousel-shell {
-  position: relative;
 }
 
 .carousel {
   display: flex;
   gap: 8px;
   overflow-x: auto;
-  padding: 0 0 8px;
+  padding: 0;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
 }
 
 .carousel::-webkit-scrollbar {
-  height: 7px;
-}
-
-.carousel::-webkit-scrollbar-track {
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.38);
-}
-
-.carousel::-webkit-scrollbar-thumb {
-  border-radius: 999px;
-  background: rgba(71, 85, 105, 0.45);
+  display: none;
 }
 
 .preview-card {
-  width: 254px;
-  min-width: 254px;
-  height: 548px;
+  width: 252px;
+  min-width: 252px;
   overflow: hidden;
   border: 0;
   border-radius: 14px;
@@ -200,8 +199,8 @@ select {
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 338px;
-  flex: 0 0 338px;
+  height: auto;
+  aspect-ratio: 3 / 4;
   background: #f8fafc;
   color: #cbd5e1;
   overflow: hidden;
@@ -224,12 +223,11 @@ select {
 
 .preview-empty strong {
   font-size: 12px;
+  font-weight: 500;
 }
 
 .preview-content {
   display: flex;
-  flex: 1;
-  min-height: 0;
   flex-direction: column;
   padding: 13px 13px 10px;
 }
@@ -239,8 +237,8 @@ select {
   margin: 0;
   overflow: hidden;
   color: #111827;
-  font-size: 15.5px;
-  font-weight: 560;
+  font-size: 15px;
+  font-weight: 400;
   letter-spacing: -0.55px;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -253,17 +251,15 @@ select {
 }
 
 .preview-body {
-  flex: 1;
-  min-height: 0;
   margin: 0;
-  overflow: hidden;
   color: #111827;
   font-size: 13.5px;
-  font-weight: 420;
+  font-weight: 400;
   letter-spacing: -0.45px;
-  line-height: 1.42;
+  line-height: 1.45;
   white-space: pre-wrap;
   word-break: keep-all;
+  overflow: visible;
 }
 
 .preview-body.is-error {
@@ -273,14 +269,9 @@ select {
 .preview-ctas {
   display: flex;
   gap: 7px;
-  min-height: 50px;
-  flex: 0 0 50px;
-  padding: 7px 12px 12px;
+  padding: 8px 12px 12px;
+  margin-top: auto;
   background: #fff;
-}
-
-.preview-ctas.two .preview-cta {
-  width: 50%;
 }
 
 .preview-cta {
@@ -294,7 +285,7 @@ select {
   border-radius: 8px;
   color: #111827;
   font-size: 13.5px;
-  font-weight: 520;
+  font-weight: 400;
   letter-spacing: -0.35px;
   text-decoration: none;
   background: #f8fafc;
@@ -310,101 +301,61 @@ select {
   white-space: nowrap;
 }
 
-.nav-btn {
-  position: absolute;
-  top: 50%;
-  z-index: 2;
-  width: 28px;
-  height: 42px;
-  transform: translateY(-50%);
-  border: 0;
-  border-radius: 999px;
-  background: rgba(15, 23, 42, 0.42);
-  color: #fff;
-  font-size: 26px;
-  line-height: 1;
-  opacity: 0;
-  transition: opacity 0.18s ease;
-}
-
-.carousel-shell:hover .nav-btn {
-  opacity: 1;
-}
-
-.nav-prev {
-  left: 6px;
-}
-
-.nav-next {
-  right: 6px;
-}
-
 .dots {
   display: flex;
   justify-content: center;
-  gap: 6px;
-  margin-top: 5px;
+  gap: 9px;
+  margin-top: 14px;
 }
 
 .dot {
-  width: 6px;
-  height: 6px;
+  width: 14px;
+  height: 14px;
   padding: 0;
   border: 0;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.82);
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 0 0 1px rgba(71, 85, 105, 0.08);
 }
 
 .dot.active {
-  width: 16px;
+  width: 30px;
   background: #475569;
 }
 
-.preview-panel.all-view .carousel {
+.layout.all-view .carousel {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(186px, 1fr));
-  gap: 8px;
+  grid-template-columns: repeat(auto-fit, minmax(206px, 1fr));
+  gap: 10px;
   overflow: visible;
+  scroll-snap-type: none;
 }
 
-.preview-panel.all-view .preview-card {
+.layout.all-view .preview-card {
   width: 100%;
   min-width: 0;
-  height: auto;
-  min-height: 0;
 }
 
-.preview-panel.all-view .preview-image {
-  height: auto;
-  flex-basis: auto;
-  aspect-ratio: 3 / 4;
-}
-
-.preview-panel.all-view .preview-content {
-  min-height: 142px;
-}
-
-.preview-panel.all-view .nav-btn,
-.preview-panel.all-view .dots {
+.layout.all-view .dots {
   display: none;
 }
 
-.preview-panel.all-view .preview-title {
+.layout.all-view .preview-title {
   font-size: 14px;
 }
 
-.preview-panel.all-view .preview-body {
+.layout.all-view .preview-body {
   font-size: 12.5px;
-  line-height: 1.38;
+  line-height: 1.42;
 }
 
-.preview-panel.all-view .preview-cta {
+.layout.all-view .preview-cta {
   font-size: 12.5px;
 }
 
 .form-panel {
   padding: 18px;
-  border-radius: 20px;
+  border-radius: 18px;
   background: #fff;
   box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
 }
@@ -415,6 +366,11 @@ select {
   overflow-x: auto;
   margin-bottom: 14px;
   padding-bottom: 2px;
+  scrollbar-width: none;
+}
+
+.card-tabs::-webkit-scrollbar {
+  display: none;
 }
 
 .card-tab {
@@ -425,7 +381,7 @@ select {
   color: #64748b;
   padding: 8px 12px;
   font-size: 12.5px;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .card-tab.active {
@@ -445,6 +401,7 @@ select {
 .form-head h2 {
   margin: 0;
   font-size: 18px;
+  font-weight: 650;
 }
 
 .form-head p {
@@ -460,7 +417,7 @@ select {
   background: #fff;
   color: #475569;
   padding: 8px 11px;
-  font-weight: 800;
+  font-weight: 700;
   font-size: 12.5px;
 }
 
@@ -476,7 +433,7 @@ select {
   display: block;
   margin-bottom: 8px;
   font-size: 14px;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .field label span,
@@ -559,6 +516,7 @@ select {
 
 .guide-box strong {
   color: #111827;
+  font-weight: 650;
 }
 
 .input-wrap {
@@ -580,6 +538,7 @@ select {
 
 .cta-grid > input {
   padding-right: 13px;
+  border-radius: 10px;
 }
 
 .input-wrap input:focus,
@@ -594,7 +553,7 @@ select {
   color: #94a3b8;
   font-style: normal;
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .input-wrap input + em {
@@ -609,7 +568,7 @@ select {
 
 .textarea-wrap textarea {
   min-height: 146px;
-  resize: none;
+  resize: vertical;
   line-height: 1.55;
 }
 
@@ -624,7 +583,7 @@ select {
   margin: 0 0 8px;
   color: #94a3b8;
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .error-text {
@@ -632,29 +591,36 @@ select {
   margin: 8px 0 0;
   color: #ef4444;
   font-size: 12.5px;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 #bodyField.is-error label,
 #bodyField.is-error .label-row p,
-#bodyField.is-error .input-wrap em {
+#bodyField.is-error .input-wrap em,
+#ctaField.is-error label {
   color: #ef4444;
+}
+
+#bodyField.is-error textarea,
+#ctaField.is-error .cta-form {
+  border-color: #ef4444;
 }
 
 #bodyField.is-error textarea {
-  border-color: #ef4444;
   color: #ef4444;
 }
 
-#bodyField.is-error .error-text {
+#bodyField.is-error .error-text,
+#ctaField.is-error .error-text {
   display: block;
 }
 
-#bodyField.shake {
-  animation: bodyShake 0.38s ease-in-out;
+#bodyField.shake,
+#ctaField.shake {
+  animation: fieldShake 0.38s ease-in-out;
 }
 
-@keyframes bodyShake {
+@keyframes fieldShake {
   0%, 100% { transform: translateX(0); }
   20% { transform: translateX(-5px); }
   40% { transform: translateX(5px); }
@@ -680,6 +646,7 @@ select {
   background: #111827;
   color: #fff;
   font-size: 12.5px;
+  font-weight: 700;
 }
 
 .cta-list {
@@ -703,13 +670,14 @@ select {
 
 .cta-form-head strong {
   font-size: 13.5px;
+  font-weight: 650;
 }
 
 .text-btn {
   border: 0;
   background: transparent;
   color: #94a3b8;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .cta-grid {
@@ -731,7 +699,7 @@ select {
   color: #fff;
   padding: 12px 16px;
   font-size: 13px;
-  font-weight: 800;
+  font-weight: 700;
   box-shadow: 0 8px 20px rgba(15, 23, 42, 0.18);
 }
 
@@ -741,14 +709,8 @@ select {
 
 @media (min-width: 1280px) {
   .preview-card {
-    width: 268px;
-    min-width: 268px;
-    height: 574px;
-  }
-
-  .preview-image {
-    height: 357px;
-    flex-basis: 357px;
+    width: 260px;
+    min-width: 260px;
   }
 }
 
@@ -759,11 +721,6 @@ select {
 
   .preview-panel {
     position: static;
-  }
-
-  .preview-card {
-    width: 254px;
-    min-width: 254px;
   }
 }
 
@@ -819,13 +776,6 @@ select {
   .preview-card {
     width: 74vw;
     min-width: 238px;
-    height: 520px;
-  }
-
-  .preview-image {
-    height: auto;
-    flex-basis: auto;
-    aspect-ratio: 3 / 4;
   }
 
   .preview-title {
@@ -841,11 +791,8 @@ select {
     font-size: 13px;
   }
 
-  .nav-btn {
-    opacity: 1;
-    width: 28px;
-    height: 42px;
-    font-size: 26px;
+  .layout.all-view .carousel {
+    grid-template-columns: 1fr;
   }
 
   .form-head {
@@ -882,9 +829,5 @@ select {
   .input-wrap textarea,
   .cta-grid > input {
     font-size: 14px;
-  }
-
-  .preview-panel.all-view .carousel {
-    grid-template-columns: 1fr;
   }
 }

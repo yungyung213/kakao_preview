@@ -30,6 +30,7 @@ const state = {
   activeIndex: 0,
   toastTimer: null,
   shakeTimer: null,
+  ctaErrorTimer: null,
 };
 
 function makeId() {
@@ -94,10 +95,10 @@ function renderBrand() {
 }
 
 function renderViewMode() {
-  const previewPanel = document.querySelector(".preview-panel");
+  const mainLayout = document.getElementById("mainLayout");
   const toggleButton = document.getElementById("toggleAllViewBtn");
 
-  previewPanel.classList.toggle("all-view", state.isAllView);
+  mainLayout.classList.toggle("all-view", state.isAllView);
   toggleButton.classList.toggle("active", state.isAllView);
   toggleButton.textContent = state.isAllView ? "스크롤 보기" : "한번에 보기";
 }
@@ -305,11 +306,12 @@ function addCta() {
   const card = getActiveCard();
 
   if (card.ctas.length >= 2) {
-    showToast("CTA 버튼은 최대 2개까지 추가할 수 있습니다.");
+    showCtaError();
     return;
   }
 
   card.ctas.push(createEmptyCta());
+  hideCtaError();
   render();
 }
 
@@ -322,7 +324,26 @@ function removeCta(index) {
   }
 
   card.ctas.splice(index, 1);
+  hideCtaError();
   render();
+}
+
+function showCtaError() {
+  const ctaField = document.getElementById("ctaField");
+  ctaField.classList.add("is-error");
+  ctaField.classList.remove("shake");
+  void ctaField.offsetWidth;
+  ctaField.classList.add("shake");
+
+  if (state.ctaErrorTimer) clearTimeout(state.ctaErrorTimer);
+  state.ctaErrorTimer = setTimeout(() => {
+    ctaField.classList.remove("shake");
+  }, 450);
+}
+
+function hideCtaError() {
+  const ctaField = document.getElementById("ctaField");
+  ctaField.classList.remove("is-error", "shake");
 }
 
 function triggerBodyShake() {
@@ -366,17 +387,6 @@ function syncCarouselPosition() {
     if (!card) return;
     carousel.scrollLeft = card.offsetLeft - carousel.offsetLeft;
   });
-}
-
-function moveCard(direction) {
-  const nextIndex = Math.max(0, Math.min(state.cards.length - 1, state.activeIndex + direction));
-  if (nextIndex === state.activeIndex) return;
-
-  state.activeIndex = nextIndex;
-  renderTabs();
-  renderForm();
-  renderDots();
-  scrollToActiveCard();
 }
 
 function handleCarouselScroll() {
@@ -432,8 +442,6 @@ function escapeAttribute(value) {
 document.getElementById("addCardBtn").addEventListener("click", addCard);
 document.getElementById("removeCardBtn").addEventListener("click", removeCard);
 document.getElementById("addCtaBtn").addEventListener("click", addCta);
-document.getElementById("prevCardBtn").addEventListener("click", () => moveCard(-1));
-document.getElementById("nextCardBtn").addEventListener("click", () => moveCard(1));
 
 document.getElementById("toggleAllViewBtn").addEventListener("click", () => {
   state.isAllView = !state.isAllView;
@@ -490,45 +498,34 @@ render();
 /*
 수동 테스트 케이스
 
-1. 전체 크기
-- 기존보다 전체 글자 크기와 브랜드명 크기가 작아져야 한다.
-- 미리보기 카드가 레퍼런스처럼 과하게 크지 않아야 한다.
+1. 업로드/캐시
+- GitHub에 index.html, style.css, script.js 3개가 루트에 있어야 한다.
+- 동일 파일명으로 업로드하면 삭제 없이 덮어쓰기 가능하다.
+- 반영이 늦으면 GitHub Pages 캐시 때문에 1~3분 기다린 뒤 강력 새로고침한다.
 
-2. 미리보기 형태
-- 브랜드 로고는 원 안에 들어가야 한다.
-- 브랜드명은 로고 오른쪽에 배치되어야 한다.
-- 카드들은 메시지 영역 내부에 여백을 두고 노출되어야 한다.
+2. 미리보기
+- 브랜드 로고는 원 안에 들어가며 브랜드명 왼쪽에 위치한다.
+- 브랜드명 텍스트는 굵게 보이지 않는다.
+- 타이틀도 굵게 보이지 않고 크기 차이만 난다.
 
 3. 캐러셀
-- 좌우 화살표가 과하게 크지 않아야 한다.
-- 좌우 화살표 클릭 시 카드가 한 장씩 이동한다.
-- 하단 dot 클릭 시 해당 카드로 이동한다.
-- 직접 가로 스크롤 시 가장 가까운 카드 기준으로 탭과 dot이 갱신된다.
+- 하단 가로 스크롤바는 보이지 않는다.
+- dot은 기존보다 크고 클릭 가능하다.
+- dot 클릭 시 해당 카드로 이동한다.
+- 직접 트랙패드/마우스 휠 가로 이동 시 현재 dot이 갱신된다.
 
 4. 한번에 보기
-- "한번에 보기" 클릭 시 스크롤 없이 전체 카드가 그리드로 보인다.
-- 다시 클릭하면 "스크롤 보기" 상태로 돌아간다.
+- 한번에 보기 클릭 시 레이아웃이 한 줄 구조로 바뀐다.
+- 미리보기는 위에서 가로로 넓게 펼쳐진다.
+- 입력창은 미리보기 아래로 내려간다.
+- 다시 클릭하면 스크롤 보기로 돌아온다.
 
-5. 이미지
-- 600x800이 아닌 이미지도 카드 영역에 꽉 차게 노출된다.
-- 이미지 외곽에 흰색 라인이 보이지 않는다.
+5. 본문
+- 미리보기 본문은 문장 길이에 따라 잘리지 않고 카드가 아래로 늘어난다.
+- 줄바꿈 2회까지 정상, 3회 이상부터 빨간색 경고와 흔들림이 발생한다.
 
-6. 타이틀/본문
-- 타이틀은 기존보다 볼드가 약해야 한다.
-- 본문 줄바꿈은 2회까지 정상, 3회 이상부터 빨간색 경고와 흔들림이 발생한다.
-
-7. CTA
-- CTA는 실제 미리보기처럼 카드 하단 내부에 라운드 버튼으로 보인다.
-- CTA 버튼명 입력과 링크 입력이 정상 반영된다.
-- CTA 버튼 클릭 시 입력한 링크가 새 탭으로 열린다.
-- 링크에 https://를 입력하지 않아도 자동으로 https://가 붙는다.
-
-8. 브랜드 선택
-- DEFENDER, Range Rover, Discovery 중 선택 가능하다.
-- 상단 브랜드명이 선택값에 따라 변경된다.
-- 원형 로고 안 텍스트가 원 밖으로 크게 넘치지 않는다.
-
-9. 반응형
-- 모바일 화면에서는 미리보기와 입력 영역이 위아래로 쌓인다.
-- 데스크톱 화면에서는 미리보기와 입력 영역이 좌우로 배치된다.
+6. CTA
+- CTA 버튼은 카드 하단의 라운드 버튼 형태다.
+- 링크 입력 후 미리보기 CTA 클릭 시 새 탭으로 이동한다.
+- CTA가 이미 2개인 상태에서 CTA 추가를 누르면 본문 경고처럼 CTA 영역 아래에 빨간 안내문이 뜬다.
 */
