@@ -283,7 +283,9 @@ function setActive(index, options = {}) {
   scrollToActive(options.smooth);
 
   if (options.moveToForm) {
-    $("formPanel").scrollIntoView({ behavior: "smooth", block: "start" });
+    setTimeout(() => {
+      $("formPanel").scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 30);
   }
 }
 
@@ -309,7 +311,13 @@ function addCard() {
   state.active = state.cards.length - 1;
   $("formPanel").addEventListener("focusin", () => { state.formFocused = true; renderCards(); });
 $("formPanel").addEventListener("focusout", (event) => { if (!$("formPanel").contains(event.relatedTarget)) { state.formFocused = false; renderCards(); } });
-document.addEventListener("mousedown", (event) => { if (!$("formPanel").contains(event.target)) { state.formFocused = false; renderCards(); } });
+document.addEventListener("click", (event) => {
+  if ($("formPanel").contains(event.target)) return;
+  if (event.target.closest(".card")) return;
+  if (event.target.closest(".dot")) return;
+  state.formFocused = false;
+  renderCards();
+});
 renderAll();
 
   requestAnimationFrame(() => {
@@ -333,7 +341,13 @@ function removeCard() {
   state.active = Math.min(targetIndex, state.cards.length - 1);
   $("formPanel").addEventListener("focusin", () => { state.formFocused = true; renderCards(); });
 $("formPanel").addEventListener("focusout", (event) => { if (!$("formPanel").contains(event.relatedTarget)) { state.formFocused = false; renderCards(); } });
-document.addEventListener("mousedown", (event) => { if (!$("formPanel").contains(event.target)) { state.formFocused = false; renderCards(); } });
+document.addEventListener("click", (event) => {
+  if ($("formPanel").contains(event.target)) return;
+  if (event.target.closest(".card")) return;
+  if (event.target.closest(".dot")) return;
+  state.formFocused = false;
+  renderCards();
+});
 renderAll();
 
   requestAnimationFrame(() => {
@@ -361,7 +375,13 @@ function addCta() {
   $("ctaField").classList.remove("isErr");
   $("formPanel").addEventListener("focusin", () => { state.formFocused = true; renderCards(); });
 $("formPanel").addEventListener("focusout", (event) => { if (!$("formPanel").contains(event.relatedTarget)) { state.formFocused = false; renderCards(); } });
-document.addEventListener("mousedown", (event) => { if (!$("formPanel").contains(event.target)) { state.formFocused = false; renderCards(); } });
+document.addEventListener("click", (event) => {
+  if ($("formPanel").contains(event.target)) return;
+  if (event.target.closest(".card")) return;
+  if (event.target.closest(".dot")) return;
+  state.formFocused = false;
+  renderCards();
+});
 renderAll();
 }
 
@@ -375,7 +395,13 @@ function removeCta(index) {
   $("ctaField").classList.remove("isErr");
   $("formPanel").addEventListener("focusin", () => { state.formFocused = true; renderCards(); });
 $("formPanel").addEventListener("focusout", (event) => { if (!$("formPanel").contains(event.relatedTarget)) { state.formFocused = false; renderCards(); } });
-document.addEventListener("mousedown", (event) => { if (!$("formPanel").contains(event.target)) { state.formFocused = false; renderCards(); } });
+document.addEventListener("click", (event) => {
+  if ($("formPanel").contains(event.target)) return;
+  if (event.target.closest(".card")) return;
+  if (event.target.closest(".dot")) return;
+  state.formFocused = false;
+  renderCards();
+});
 renderAll();
 }
 
@@ -426,7 +452,13 @@ $("imageInput").addEventListener("change", (event) => {
     activeCard().image = readerEvent.target.result;
     $("formPanel").addEventListener("focusin", () => { state.formFocused = true; renderCards(); });
 $("formPanel").addEventListener("focusout", (event) => { if (!$("formPanel").contains(event.relatedTarget)) { state.formFocused = false; renderCards(); } });
-document.addEventListener("mousedown", (event) => { if (!$("formPanel").contains(event.target)) { state.formFocused = false; renderCards(); } });
+document.addEventListener("click", (event) => {
+  if ($("formPanel").contains(event.target)) return;
+  if (event.target.closest(".card")) return;
+  if (event.target.closest(".dot")) return;
+  state.formFocused = false;
+  renderCards();
+});
 renderAll();
   };
   reader.readAsDataURL(file);
@@ -472,7 +504,13 @@ $("bodyInput").addEventListener("input", (event) => {
 
 $("formPanel").addEventListener("focusin", () => { state.formFocused = true; renderCards(); });
 $("formPanel").addEventListener("focusout", (event) => { if (!$("formPanel").contains(event.relatedTarget)) { state.formFocused = false; renderCards(); } });
-document.addEventListener("mousedown", (event) => { if (!$("formPanel").contains(event.target)) { state.formFocused = false; renderCards(); } });
+document.addEventListener("click", (event) => {
+  if ($("formPanel").contains(event.target)) return;
+  if (event.target.closest(".card")) return;
+  if (event.target.closest(".dot")) return;
+  state.formFocused = false;
+  renderCards();
+});
 renderAll();
 
 /*
