@@ -1,5 +1,5 @@
-Kakao Carousel Preview v16
+Kakao Carousel Preview v17
 
 업로드 파일: index.html, style.css, script.js
 
-v16: 2MB 초과 안내 중앙 노출, 입력 중인 카드 미리보기 외곽선 표시.
+v17: 편집 중 카드 표시를 outline에서 box-shadow로 변경해 모서리 깨짐 수정.
