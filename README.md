@@ -1,5 +1,5 @@
-Kakao Carousel Preview v18
+Kakao Carousel Preview v19
 
 업로드 파일: index.html, style.css, script.js
 
-v18: 편집 중 카드 테두리가 캐러셀 overflow에 잘려 보이는 문제를 inset box-shadow로 수정.
+v19: 편집 중 카드 테두리 컬러를 블루로 변경하고 카드 간격을 소폭 확대.
