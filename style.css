@@ -17,15 +17,15 @@ button{cursor:pointer}
 .layout.all .form{max-width:760px}
 .preview{position:sticky;top:18px;overflow:hidden;min-height:650px;padding:20px 28px 18px;border-radius:20px;background:#c9d4e2}
 .layout.all .preview{position:static}
-.brand{display:flex;align-items:center;gap:8px;margin:0 0 6px}
+.brand{display:flex;align-items:center;gap:8px;margin:0 0 2px}
 .brandLogo{width:40px;height:40px;border-radius:999px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:6px;font-weight:700;letter-spacing:-.45px;box-shadow:0 1px 4px rgba(15,23,42,.08);white-space:nowrap;flex:0 0 40px}
 .brandLogo.range{font-size:4.4px}
 .brandLogo.discovery{font-size:5px}
 .brandName{font-size:15px;font-weight:600;letter-spacing:-.45px}
 
 /* 브랜드 로고 너비만큼 카드 시작 위치를 오른쪽으로 밀어 레퍼런스 레이아웃처럼 정렬 */
-.carouselWrap{margin-left:48px;overflow:hidden}
-.track{display:flex;gap:2px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.carouselWrap{margin-left:48px;overflow:hidden;margin-top:0}
+.track{display:flex;gap:6px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .track::-webkit-scrollbar{display:none}
 
 .card{width:252px;min-width:252px;min-height:555px;border-radius:14px;background:#fff;overflow:hidden;display:flex;flex-direction:column;scroll-snap-align:start;opacity:1;transition:transform .18s ease}
@@ -44,7 +44,7 @@ button{cursor:pointer}
 .dots{display:flex;justify-content:center;gap:9px;margin-top:28px}
 .dot{width:14px;height:14px;border-radius:999px;border:0;background:rgba(255,255,255,.96)}
 .dot.active{width:30px;background:#475569}
-.layout.all .track{overflow:visible;scroll-snap-type:none;flex-wrap:nowrap;gap:2px}
+.layout.all .track{overflow:visible;scroll-snap-type:none;flex-wrap:nowrap;gap:6px}
 .layout.all .card{width:252px;min-width:252px}
 .form{padding:15px;border-radius:20px;background:#fff;box-shadow:0 1px 2px rgba(15,23,42,.08)}
 .tabs{display:flex;gap:7px;overflow-x:auto;margin-bottom:12px;scrollbar-width:none}
