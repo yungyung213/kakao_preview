@@ -116,6 +116,9 @@ function renderCards() {
       const imageHtml = card.image
         ? `<img src="${card.image}" alt="">`
         : `▧<br>600 × 800 이미지`;
+      const imageBlock = card.imageLink
+        ? `<a class="imageAnchor" href="${escapeHtml(normalizeUrl(card.imageLink))}" target="_blank" rel="noopener noreferrer">${imageHtml}</a>`
+        : imageHtml;
 
       const ctaHtml = card.ctas
         .map((cta) => {
@@ -129,7 +132,7 @@ function renderCards() {
 
       return `
         <article class="card ${index === state.active ? "active" : ""} ${state.formFocused && index === state.active ? "editing" : ""}" tabindex="0" data-index="${index}">
-          <div class="img">${imageHtml}</div>
+          <div class="img">${imageBlock}</div>
           <div class="content">
             <h2 class="title">${escapeHtml(card.title || DEFAULT_TITLE)}</h2>
             <div class="line"></div>
@@ -194,6 +197,8 @@ function renderForm() {
     $("imageBtn").classList.remove("has");
     $("thumb").removeAttribute("src");
   }
+
+  $("imageLinkInput").value = card.imageLink || "";
 
   $("titleInput").value = card.title;
   $("titleCount").textContent = `${textLen(card.title)}/${MAX_TITLE}자`;
@@ -414,6 +419,13 @@ renderAll();
   };
   reader.readAsDataURL(file);
   event.target.value = "";
+});
+
+
+$("imageLinkInput").addEventListener("input", (event) => {
+  activeCard().imageLink = event.target.value;
+  renderCards();
+  renderDots();
 });
 
 $("titleInput").addEventListener("focus", () => clearDefault("title"));
