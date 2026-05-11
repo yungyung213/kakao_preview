@@ -258,6 +258,7 @@ function addCard() {
   S.cards.push(makeCard(S.cards.length));
   S.active = S.cards.length - 1;
   render();
+track.onscroll=()=>{};
 }
 
 function removeCard() {
@@ -268,6 +269,7 @@ function removeCard() {
   S.cards.splice(S.active, 1);
   S.active = Math.max(0, Math.min(S.active, S.cards.length - 1));
   render();
+track.onscroll=()=>{};
 }
 
 function showCtaError() {
@@ -283,6 +285,7 @@ function addCta() {
   activeCard().ctas.push(makeCta());
   $("ctaField").classList.remove("isErr");
   render();
+track.onscroll=()=>{};
 }
 
 function removeCta(index) {
@@ -293,6 +296,7 @@ function removeCta(index) {
   activeCard().ctas.splice(index, 1);
   $("ctaField").classList.remove("isErr");
   render();
+track.onscroll=()=>{};
 }
 
 function clearDefault(field) {
@@ -334,6 +338,7 @@ $("imageInput").addEventListener("change", (event) => {
   reader.onload = (readerEvent) => {
     activeCard().image = readerEvent.target.result;
     render();
+track.onscroll=()=>{};
   };
   reader.readAsDataURL(file);
   event.target.value = "";
@@ -395,3 +400,4 @@ $("track").addEventListener("scroll", () => {
 });
 
 render();
+track.onscroll=()=>{};

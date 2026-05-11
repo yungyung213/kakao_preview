@@ -17,11 +17,11 @@ button{cursor:pointer}
 .layout.all .form{max-width:760px}
 .preview{position:sticky;top:18px;overflow:hidden;min-height:650px;padding:20px 28px 18px;border-radius:20px;background:#c9d4e2}
 .layout.all .preview{position:static}
-.brand{display:flex;align-items:center;gap:8px;margin:0 0 2px}
-.brandLogo{width:40px;height:40px;border-radius:999px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:6px;font-weight:700;letter-spacing:-.45px;box-shadow:0 1px 4px rgba(15,23,42,.08);white-space:nowrap;flex:0 0 40px}
+.brand{display:flex;align-items:flex-start;gap:8px;margin:0 0 6px;margin-left:48px;min-height:22px}
+.brandLogo{width:40px;height:40px;border-radius:999px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:6px;font-weight:700;letter-spacing:-.45px;box-shadow:0 1px 4px rgba(15,23,42,.08);white-space:nowrap;flex:0 0 40px;position:absolute;left:28px;top:20px}
 .brandLogo.range{font-size:4.4px}
 .brandLogo.discovery{font-size:5px}
-.brandName{font-size:15px;font-weight:600;letter-spacing:-.45px}
+.brandName{font-size:15px;font-weight:600;letter-spacing:-.45px;line-height:1.15;padding-top:0}
 
 /* 브랜드 로고 너비만큼 카드 시작 위치를 오른쪽으로 밀어 레퍼런스 레이아웃처럼 정렬 */
 .carouselWrap{margin-left:48px;overflow:hidden;margin-top:0}
@@ -95,3 +95,8 @@ select{height:39px;padding:0 11px;font-size:13px}
 @media(max-width:640px){.page{padding:12px}.top{flex-direction:column;align-items:stretch}.topBtns{flex-direction:column}.btn{width:100%}.preview,.form{border-radius:18px;padding:12px}.carouselWrap{margin-left:0}.card{width:74vw;min-width:238px}.ctaGrid{grid-template-columns:1fr}}
 
 .dot{background:#fff!important;opacity:.42!important}.dot.active{background:#475569!important;opacity:1!important}
+
+@media(max-width:640px){
+  .brand{margin-left:46px}
+  .brandLogo{left:12px;top:12px}
+}
