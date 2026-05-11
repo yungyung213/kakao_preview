@@ -100,3 +100,6 @@ select{height:39px;padding:0 11px;font-size:13px}
   .brand{margin-left:46px}
   .brandLogo{left:12px;top:12px}
 }
+
+.imageGuide{display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;text-align:center!important;gap:4px!important;line-height:1.45!important}
+.imageGuide p{margin:0!important}
