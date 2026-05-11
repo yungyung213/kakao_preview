@@ -17,7 +17,7 @@ button{cursor:pointer}
 .layout.all .form{max-width:760px}
 .preview{position:sticky;top:18px;overflow:hidden;min-height:650px;padding:20px 28px 18px;border-radius:20px;background:#c9d4e2}
 .layout.all .preview{position:static}
-.brand{display:flex;align-items:center;gap:8px;margin:0 0 24px}
+.brand{display:flex;align-items:center;gap:8px;margin:0 0 12px}
 .brandLogo{width:40px;height:40px;border-radius:999px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:6px;font-weight:700;letter-spacing:-.45px;box-shadow:0 1px 4px rgba(15,23,42,.08);white-space:nowrap;flex:0 0 40px}
 .brandLogo.range{font-size:4.4px}
 .brandLogo.discovery{font-size:5px}
@@ -28,8 +28,8 @@ button{cursor:pointer}
 .track{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .track::-webkit-scrollbar{display:none}
 
-.card{width:252px;min-width:252px;min-height:555px;border-radius:14px;background:#fff;overflow:hidden;display:flex;flex-direction:column;scroll-snap-align:start;opacity:.48;transition:opacity .18s ease,transform .18s ease}
-.card.active{opacity:1}
+.card{width:252px;min-width:252px;min-height:555px;border-radius:14px;background:#fff;overflow:hidden;display:flex;flex-direction:column;scroll-snap-align:start;opacity:1;transition:transform .18s ease}
+.card.active{}
 .card:focus{outline:3px solid rgba(15,23,42,.2);outline-offset:2px}
 .img{aspect-ratio:3/4;background:#f8fafc;color:#cbd5e1;display:flex;align-items:center;justify-content:center;text-align:center;font-size:11px}
 .img img{width:100%;height:100%;object-fit:cover;display:block}
