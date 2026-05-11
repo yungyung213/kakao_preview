@@ -41,6 +41,7 @@ function makeCard(index) {
   return {
     id: makeId(),
     image: "",
+    imageLink: "",
     title: index === 0 ? DEFAULT_TITLE : "",
     body: index === 0 ? DEFAULT_BODY : "",
     ctas: [makeCta()],
@@ -146,9 +147,20 @@ function renderCards() {
 
   document.querySelectorAll(".card").forEach((cardEl) => {
     cardEl.addEventListener("click", (event) => {
-      if (event.target.closest("a")) return;
-      setActive(Number(cardEl.dataset.index), { moveToForm: true, smooth: true });
+      const index = Number(cardEl.dataset.index);
+
+      if (event.target.closest(".cta")) {
+        return;
+      }
+
+      if (event.target.closest(".imageAnchor")) {
+        setActive(index, { moveToForm: false, smooth: true });
+        return;
+      }
+
+      setActive(index, { moveToForm: true, smooth: true });
     });
+
     cardEl.addEventListener("keydown", (event) => {
       if (event.key === "Enter") {
         setActive(Number(cardEl.dataset.index), { moveToForm: true, smooth: true });
