@@ -1,111 +1,99 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>카카오 캐러셀 피드 미리보기</title>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>카카오 캐러셀 피드 미리보기</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="page">
-    <header class="header">
-      <div>
-        <h1>카카오 캐러셀 피드 미리보기</h1>
-        <p>이미지, 타이틀, 본문, CTA를 입력하면 카카오톡 형태로 바로 확인할 수 있습니다.</p>
+<div class="page">
+  <header class="top">
+    <div>
+      <h1>카카오 캐러셀 피드 미리보기</h1>
+      <p>이미지, 타이틀, 본문, CTA를 입력하면 카카오톡 형태로 바로 확인할 수 있습니다.</p>
+    </div>
+    <div class="topBtns">
+      <button id="allBtn" class="btn ghost">한번에 보기</button>
+      <button id="addCard" class="btn dark">+ 캐러셀 추가</button>
+    </div>
+  </header>
+
+  <main id="layout" class="layout">
+    <section id="preview" class="preview">
+      <div class="brand">
+        <div id="brandLogo" class="brandLogo">DEFENDER</div>
+        <div id="brandName" class="brandName">(광고)DEFENDER</div>
       </div>
-      <div class="header-actions">
-        <button type="button" class="secondary-btn" id="toggleAllViewBtn">한번에 보기</button>
-        <button type="button" class="primary-btn" id="addCardBtn"><span>+</span> 캐러셀 추가</button>
+      <div class="track" id="track"></div>
+      <div class="dots" id="dots"></div>
+    </section>
+
+    <section id="formPanel" class="form">
+      <div id="tabs" class="tabs"></div>
+      <div class="formHead">
+        <div>
+          <h2 id="formTitle">카드 1 입력</h2>
+          <p>기본 2개, 최대 6개까지 구성 가능합니다.</p>
+        </div>
+        <button id="removeCard" class="miniBtn">삭제</button>
       </div>
-    </header>
 
-    <div class="toast" id="toast" role="alert" aria-live="polite"></div>
-
-    <main class="layout" id="mainLayout">
-      <section class="preview-zone">
-        <div class="message-head">
-          <div class="brand-logo" id="brandLogo">DEFENDER</div>
-          <div class="brand-name" id="previewBrandName">(광고)DEFENDER</div>
+      <div class="fields">
+        <div class="field">
+          <label>브랜드명 <b>*</b></label>
+          <select id="brandSelect">
+            <option value="DEFENDER">(광고)DEFENDER</option>
+            <option value="Range Rover">(광고)Range Rover</option>
+            <option value="Discovery">(광고)Discovery</option>
+          </select>
         </div>
 
-        <div class="preview-panel" id="previewPanel" aria-label="카카오톡 미리보기">
-          <div class="carousel-shell">
-            <div class="carousel" id="previewCarousel"></div>
-          </div>
-          <div class="dots" id="dots"></div>
-        </div>
-      </section>
-
-      <section class="form-panel" aria-label="입력 영역">
-        <div class="card-tabs" id="cardTabs"></div>
-
-        <div class="form-head">
-          <div>
-            <h2 id="formTitle">카드 1 입력</h2>
-            <p>기본 2개, 최대 6개까지 구성 가능합니다.</p>
-          </div>
-          <button type="button" class="subtle-btn" id="removeCardBtn">삭제</button>
-        </div>
-
-        <div class="form-body">
-          <div class="field">
-            <label for="brandSelect">브랜드명 <span>*</span></label>
-            <select id="brandSelect" class="select-input">
-              <option value="DEFENDER">(광고)DEFENDER</option>
-              <option value="Range Rover">(광고)Range Rover</option>
-              <option value="Discovery">(광고)Discovery</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label>이미지 <span>*</span></label>
-            <div class="image-upload-grid">
-              <button type="button" class="image-upload" id="imageUploadBtn">
-                <img id="imageThumb" alt="업로드 이미지 미리보기" />
-                <div class="image-empty">
-                  <div class="image-icon">▧</div>
-                  <strong>이미지 삽입</strong>
-                </div>
-              </button>
-              <div class="guide-box">
-                <strong>권장 사이즈: 600 × 800px</strong>
-                <input type="file" accept="image/*" id="imageInput" hidden />
-              </div>
-            </div>
-          </div>
-
-          <div class="field">
-            <label for="titleInput">타이틀 <span>*</span></label>
-            <div class="input-wrap">
-              <input id="titleInput" type="text" maxlength="20" placeholder="타이틀을 입력해주세요" />
-              <em id="titleCount">0/20자</em>
-            </div>
-          </div>
-
-          <div class="field" id="bodyField">
-            <div class="label-row">
-              <label for="bodyInput">내용 <span>*</span></label>
-              <p id="lineBreakCount">줄바꿈 0/2회</p>
-            </div>
-            <div class="input-wrap textarea-wrap">
-              <textarea id="bodyInput" maxlength="180" rows="7" placeholder="내용을 입력해주세요."></textarea>
-              <em id="bodyCount">0/180자</em>
-            </div>
-            <p class="error-text" id="bodyError">본문 줄바꿈은 최대 2회까지만 권장됩니다. 줄바꿈을 줄이면 다시 정상 표시됩니다.</p>
-          </div>
-
-          <div class="field" id="ctaField">
-            <div class="cta-head">
-              <label>CTA 버튼 <span>*</span></label>
-              <button type="button" class="dark-small-btn" id="addCtaBtn">CTA 추가</button>
-            </div>
-            <div id="ctaForms" class="cta-list"></div>
-            <p class="error-text" id="ctaError">CTA 버튼은 최대 2개까지 추가할 수 있습니다.</p>
+        <div class="field imageField">
+          <label>이미지 <b>*</b></label>
+          <div class="imageRow">
+            <button id="imageBtn" class="imageBtn">
+              <img id="thumb" alt="">
+              <span>▧<br>이미지 삽입</span>
+            </button>
+            <div class="imageGuide">권장 사이즈: <strong>600 × 800px</strong></div>
+            <input id="imageInput" type="file" accept="image/*" hidden>
           </div>
         </div>
-      </section>
-    </main>
-  </div>
-  <script src="script.js"></script>
+
+        <div id="titleField" class="field">
+          <label>타이틀 <b>*</b></label>
+          <div class="inputBox">
+            <input id="titleInput" maxlength="20" placeholder="타이틀을 입력해주세요.">
+            <em id="titleCount">0/20자</em>
+          </div>
+        </div>
+
+        <div id="bodyField" class="field">
+          <div class="labelRow">
+            <label>내용 <b>*</b></label>
+            <p id="breakCount">줄바꿈 0/2회</p>
+          </div>
+          <div class="textareaBox">
+            <textarea id="bodyInput" maxlength="180" placeholder="내용을 입력해주세요."></textarea>
+            <em id="bodyCount">0/180자</em>
+          </div>
+          <p class="err">본문 줄바꿈은 최대 2회까지만 권장됩니다. 줄바꿈을 줄이면 다시 정상 표시됩니다.</p>
+        </div>
+
+        <div id="ctaField" class="field">
+          <div class="ctaTop">
+            <label>CTA 버튼 <b>*</b></label>
+            <button id="addCta" class="smallDark">CTA 추가</button>
+          </div>
+          <div id="ctaForms" class="ctaForms"></div>
+          <p class="err">CTA 버튼은 최대 2개까지 추가할 수 있습니다.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+<div id="toast" class="toast"></div>
+<script src="script.js"></script>
 </body>
 </html>
