@@ -5,6 +5,7 @@ const MAX_TITLE = 20;
 const MAX_BODY = 180;
 const MAX_BUTTON = 8;
 const MAX_BREAKS = 2;
+
 const DEFAULT_TITLE = "타이틀을 입력해주세요.";
 const DEFAULT_BODY = "내용을 입력해주세요.";
 
@@ -14,7 +15,7 @@ const BRANDS = {
   Discovery: { label: "(광고)Discovery", logo: "DISCOVERY", cls: "discovery" },
 };
 
-const S = {
+let state = {
   brand: "DEFENDER",
   all: false,
   active: 0,
@@ -22,8 +23,12 @@ const S = {
   toastTimer: null,
 };
 
-function uid() {
-  return `c-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+function $(id) {
+  return document.getElementById(id);
+}
+
+function makeId() {
+  return `card-${Date.now()}-${Math.random().toString(36).slice(2)}`;
 }
 
 function makeCta() {
@@ -32,7 +37,7 @@ function makeCta() {
 
 function makeCard(index) {
   return {
-    id: uid(),
+    id: makeId(),
     image: "",
     title: index === 0 ? DEFAULT_TITLE : "",
     body: index === 0 ? DEFAULT_BODY : "",
@@ -40,18 +45,24 @@ function makeCard(index) {
   };
 }
 
-const $ = (id) => document.getElementById(id);
+function activeCard() {
+  return state.cards[state.active];
+}
 
 function countBreaks(value) {
-  return (value.match(/\n/g) || []).length;
+  return (String(value || "").match(/\n/g) || []).length;
 }
 
 function hasBodyError(value) {
   return countBreaks(value) > MAX_BREAKS;
 }
 
+function textLen(value) {
+  return Array.from(String(value || "")).length;
+}
+
 function escapeHtml(value) {
-  return String(value)
+  return String(value ?? "")
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;")
@@ -60,63 +71,69 @@ function escapeHtml(value) {
 }
 
 function normalizeUrl(value) {
-  const v = String(value || "").trim();
-  if (!v) return "#";
-  if (v.startsWith("#") || /^(https?:\/\/|mailto:|tel:)/i.test(v)) return v;
-  return `https://${v}`;
+  const url = String(value || "").trim();
+  if (!url) return "#";
+  if (url.startsWith("#") || /^(https?:\/\/|mailto:|tel:)/i.test(url)) return url;
+  return `https://${url}`;
 }
 
-function activeCard() {
-  return S.cards[S.active];
+function showToast(message) {
+  $("toast").textContent = message;
+  $("toast").classList.add("show");
+  clearTimeout(state.toastTimer);
+  state.toastTimer = setTimeout(() => $("toast").classList.remove("show"), 2000);
 }
 
-function render() {
+function renderAll() {
   renderBrand();
   renderCards();
   renderDots();
   renderTabs();
   renderForm();
   renderMode();
-  if (!S.all) scrollToActive(false);
+  scrollToActive(false);
 }
 
 function renderBrand() {
-  const brand = BRANDS[S.brand];
+  const brand = BRANDS[state.brand];
   $("brandName").textContent = brand.label;
   $("brandLogo").textContent = brand.logo;
   $("brandLogo").className = `brandLogo ${brand.cls}`;
-  $("brandSelect").value = S.brand;
+  $("brandSelect").value = state.brand;
 }
 
 function renderMode() {
-  $("layout").classList.toggle("all", S.all);
-  $("allBtn").classList.toggle("on", S.all);
-  $("allBtn").textContent = S.all ? "스크롤 보기" : "한번에 보기";
+  $("layout").classList.toggle("all", state.all);
+  $("allBtn").classList.toggle("on", state.all);
+  $("allBtn").textContent = state.all ? "스크롤 보기" : "한번에 보기";
 }
 
 function renderCards() {
-  $("track").innerHTML = S.cards
+  $("track").innerHTML = state.cards
     .map((card, index) => {
       const imageHtml = card.image
         ? `<img src="${card.image}" alt="">`
         : `▧<br>600 × 800 이미지`;
 
-      const ctas = card.ctas
-        .map(
-          (cta) =>
-            `<a class="cta" href="${escapeHtml(normalizeUrl(cta.url))}" target="_blank" rel="noopener noreferrer"><span>${escapeHtml(cta.label || "버튼명")}</span></a>`
-        )
+      const ctaHtml = card.ctas
+        .map((cta) => {
+          return `
+            <a class="cta" href="${escapeHtml(normalizeUrl(cta.url))}" target="_blank" rel="noopener noreferrer">
+              <span>${escapeHtml(cta.label || "버튼명")}</span>
+            </a>
+          `;
+        })
         .join("");
 
       return `
-        <article class="card ${index === S.active ? "active" : ""}" tabindex="0" data-index="${index}">
+        <article class="card ${index === state.active ? "active" : ""}" tabindex="0" data-index="${index}">
           <div class="img">${imageHtml}</div>
           <div class="content">
             <h2 class="title">${escapeHtml(card.title || DEFAULT_TITLE)}</h2>
             <div class="line"></div>
             <p class="body ${hasBodyError(card.body) ? "errText" : ""}">${escapeHtml(card.body || DEFAULT_BODY)}</p>
           </div>
-          <div class="ctas">${ctas}</div>
+          <div class="ctas">${ctaHtml}</div>
         </article>
       `;
     })
@@ -125,38 +142,48 @@ function renderCards() {
   document.querySelectorAll(".card").forEach((cardEl) => {
     cardEl.addEventListener("click", (event) => {
       if (event.target.closest("a")) return;
-      selectCard(Number(cardEl.dataset.index), true);
+      setActive(Number(cardEl.dataset.index), { moveToForm: true, smooth: true });
     });
     cardEl.addEventListener("keydown", (event) => {
-      if (event.key === "Enter") selectCard(Number(cardEl.dataset.index), true);
+      if (event.key === "Enter") {
+        setActive(Number(cardEl.dataset.index), { moveToForm: true, smooth: true });
+      }
     });
   });
 }
 
 function renderDots() {
-  $("dots").innerHTML = S.cards
-    .map((_, index) => `<button type="button" class="dot ${index === S.active ? "active" : ""}" data-index="${index}"></button>`)
+  $("dots").innerHTML = state.cards
+    .map((_, index) => {
+      return `<button type="button" class="dot ${index === state.active ? "active" : ""}" data-index="${index}" aria-label="카드 ${index + 1} 보기"></button>`;
+    })
     .join("");
 
   document.querySelectorAll(".dot").forEach((dot) => {
-    dot.addEventListener("click", () => selectCard(Number(dot.dataset.index), false));
+    dot.addEventListener("click", () => {
+      setActive(Number(dot.dataset.index), { moveToForm: false, smooth: true });
+    });
   });
 }
 
 function renderTabs() {
-  $("tabs").innerHTML = S.cards
-    .map((_, index) => `<button type="button" class="tab ${index === S.active ? "active" : ""}" data-index="${index}">카드 ${index + 1}</button>`)
+  $("tabs").innerHTML = state.cards
+    .map((_, index) => {
+      return `<button type="button" class="tab ${index === state.active ? "active" : ""}" data-index="${index}">카드 ${index + 1}</button>`;
+    })
     .join("");
 
   document.querySelectorAll(".tab").forEach((tab) => {
-    tab.addEventListener("click", () => selectCard(Number(tab.dataset.index), false));
+    tab.addEventListener("click", () => {
+      setActive(Number(tab.dataset.index), { moveToForm: false, smooth: true });
+    });
   });
 }
 
 function renderForm() {
   const card = activeCard();
 
-  $("formTitle").textContent = `카드 ${S.active + 1} 입력`;
+  $("formTitle").textContent = `카드 ${state.active + 1} 입력`;
 
   if (card.image) {
     $("imageBtn").classList.add("has");
@@ -167,10 +194,10 @@ function renderForm() {
   }
 
   $("titleInput").value = card.title;
-  $("titleCount").textContent = `${card.title.length}/${MAX_TITLE}자`;
+  $("titleCount").textContent = `${textLen(card.title)}/${MAX_TITLE}자`;
 
   $("bodyInput").value = card.body;
-  $("bodyCount").textContent = `${card.body.length}/${MAX_BODY}자`;
+  $("bodyCount").textContent = `${textLen(card.body)}/${MAX_BODY}자`;
   $("breakCount").textContent = `줄바꿈 ${countBreaks(card.body)}/${MAX_BREAKS}회`;
   $("bodyField").classList.toggle("isErr", hasBodyError(card.body));
 
@@ -181,8 +208,8 @@ function renderCtas() {
   const card = activeCard();
 
   $("ctaForms").innerHTML = card.ctas
-    .map(
-      (cta, index) => `
+    .map((cta, index) => {
+      return `
         <div class="ctaBlock">
           <div class="ctaBlockHead">
             <strong>버튼 ${index + 1}</strong>
@@ -191,24 +218,26 @@ function renderCtas() {
           <div class="ctaGrid">
             <div class="inputBox">
               <input class="ctaLabel" data-index="${index}" maxlength="${MAX_BUTTON}" placeholder="버튼명을 입력해주세요" value="${escapeHtml(cta.label)}">
-              <em>${cta.label.length}/${MAX_BUTTON}</em>
+              <em>${textLen(cta.label)}/${MAX_BUTTON}</em>
             </div>
             <input class="ctaUrl" data-index="${index}" placeholder="https://" value="${escapeHtml(cta.url)}">
           </div>
         </div>
-      `
-    )
+      `;
+    })
     .join("");
 
   document.querySelectorAll("[data-delete]").forEach((button) => {
-    button.addEventListener("click", () => removeCta(Number(button.dataset.delete)));
+    button.addEventListener("click", () => {
+      removeCta(Number(button.dataset.delete));
+    });
   });
 
   document.querySelectorAll(".ctaLabel").forEach((input) => {
     input.addEventListener("input", () => {
       const index = Number(input.dataset.index);
       activeCard().ctas[index].label = input.value.slice(0, MAX_BUTTON);
-      input.parentElement.querySelector("em").textContent = `${input.value.length}/${MAX_BUTTON}`;
+      input.parentElement.querySelector("em").textContent = `${textLen(input.value)}/${MAX_BUTTON}`;
       renderCards();
       renderDots();
     });
@@ -224,52 +253,72 @@ function renderCtas() {
   });
 }
 
-function selectCard(index, moveToForm) {
-  S.active = index;
+function setActive(index, options = {}) {
+  const safeIndex = Math.max(0, Math.min(index, state.cards.length - 1));
+  state.active = safeIndex;
+
   renderCards();
   renderDots();
   renderTabs();
   renderForm();
-  if (!S.all) scrollToActive(true);
-  if (moveToForm) $("formPanel").scrollIntoView({ behavior: "smooth", block: "start" });
+  scrollToActive(options.smooth);
+
+  if (options.moveToForm) {
+    $("formPanel").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
 }
 
-function scrollToActive(smooth) {
-  const card = $("track").querySelector(`[data-index="${S.active}"]`);
+function scrollToActive(smooth = false) {
+  if (state.all) return;
+
+  const card = $("track").querySelector(`[data-index="${state.active}"]`);
   if (!card) return;
+
   $("track").scrollTo({
     left: card.offsetLeft - $("track").offsetLeft,
     behavior: smooth ? "smooth" : "auto",
   });
 }
 
-function showToast(message) {
-  $("toast").textContent = message;
-  $("toast").classList.add("show");
-  clearTimeout(S.toastTimer);
-  S.toastTimer = setTimeout(() => $("toast").classList.remove("show"), 2000);
-}
-
 function addCard() {
-  if (S.cards.length >= MAX_CARDS) {
+  if (state.cards.length >= MAX_CARDS) {
     showToast("캐러셀은 최대 6개까지 생성할 수 있습니다.");
     return;
   }
-  S.cards.push(makeCard(S.cards.length));
-  S.active = S.cards.length - 1;
-  render();
-track.onscroll=()=>{};
+
+  state.cards.push(makeCard(state.cards.length));
+  state.active = state.cards.length - 1;
+  renderAll();
+
+  requestAnimationFrame(() => {
+    state.active = state.cards.length - 1;
+    renderCards();
+    renderDots();
+    renderTabs();
+    renderForm();
+    scrollToActive(true);
+  });
 }
 
 function removeCard() {
-  if (S.cards.length <= MIN_CARDS) {
+  if (state.cards.length <= MIN_CARDS) {
     showToast("캐러셀은 최소 2개가 필요합니다.");
     return;
   }
-  S.cards.splice(S.active, 1);
-  S.active = Math.max(0, Math.min(S.active, S.cards.length - 1));
-  render();
-track.onscroll=()=>{};
+
+  const targetIndex = Math.max(0, state.active - 1);
+  state.cards.splice(state.active, 1);
+  state.active = Math.min(targetIndex, state.cards.length - 1);
+  renderAll();
+
+  requestAnimationFrame(() => {
+    state.active = Math.min(targetIndex, state.cards.length - 1);
+    renderCards();
+    renderDots();
+    renderTabs();
+    renderForm();
+    scrollToActive(true);
+  });
 }
 
 function showCtaError() {
@@ -282,10 +331,10 @@ function addCta() {
     showCtaError();
     return;
   }
+
   activeCard().ctas.push(makeCta());
   $("ctaField").classList.remove("isErr");
-  render();
-track.onscroll=()=>{};
+  renderAll();
 }
 
 function removeCta(index) {
@@ -293,10 +342,10 @@ function removeCta(index) {
     showToast("CTA 버튼은 최소 1개가 필요합니다.");
     return;
   }
+
   activeCard().ctas.splice(index, 1);
   $("ctaField").classList.remove("isErr");
-  render();
-track.onscroll=()=>{};
+  renderAll();
 }
 
 function clearDefault(field) {
@@ -320,13 +369,13 @@ $("removeCardBtn").addEventListener("click", removeCard);
 $("addCtaBtn").addEventListener("click", addCta);
 
 $("allBtn").addEventListener("click", () => {
-  S.all = !S.all;
+  state.all = !state.all;
   renderMode();
-  if (!S.all) scrollToActive(true);
+  scrollToActive(true);
 });
 
 $("brandSelect").addEventListener("change", (event) => {
-  S.brand = event.target.value;
+  state.brand = event.target.value;
   renderBrand();
 });
 
@@ -334,11 +383,11 @@ $("imageBtn").addEventListener("click", () => $("imageInput").click());
 $("imageInput").addEventListener("change", (event) => {
   const file = event.target.files[0];
   if (!file) return;
+
   const reader = new FileReader();
   reader.onload = (readerEvent) => {
     activeCard().image = readerEvent.target.result;
-    render();
-track.onscroll=()=>{};
+    renderAll();
   };
   reader.readAsDataURL(file);
   event.target.value = "";
@@ -351,7 +400,7 @@ $("bodyInput").addEventListener("click", () => clearDefault("body"));
 
 $("titleInput").addEventListener("input", (event) => {
   activeCard().title = event.target.value.slice(0, MAX_TITLE);
-  $("titleCount").textContent = `${activeCard().title.length}/${MAX_TITLE}자`;
+  $("titleCount").textContent = `${textLen(activeCard().title)}/${MAX_TITLE}자`;
   renderCards();
   renderDots();
 });
@@ -360,7 +409,7 @@ $("bodyInput").addEventListener("input", (event) => {
   const value = event.target.value.slice(0, MAX_BODY);
   activeCard().body = value;
 
-  $("bodyCount").textContent = `${value.length}/${MAX_BODY}자`;
+  $("bodyCount").textContent = `${textLen(value)}/${MAX_BODY}자`;
   $("breakCount").textContent = `줄바꿈 ${countBreaks(value)}/${MAX_BREAKS}회`;
 
   const error = hasBodyError(value);
@@ -374,30 +423,25 @@ $("bodyInput").addEventListener("input", (event) => {
   renderDots();
 });
 
-$("track").addEventListener("scroll", () => {
-  if (S.all) return;
-  clearTimeout(window.__trackTimer);
-  window.__trackTimer = setTimeout(() => {
-    const cards = Array.from($("track").querySelectorAll(".card"));
-    let best = 0;
-    let min = Infinity;
-    cards.forEach((card, index) => {
-      const distance = Math.abs(card.offsetLeft - $("track").offsetLeft - $("track").scrollLeft);
-      if (distance < min) {
-        min = distance;
-        best = index;
-      }
-    });
+renderAll();
 
-    if (best !== S.active) {
-      S.active = best;
-      renderCards();
-      renderDots();
-      renderTabs();
-      renderForm();
-    }
-  }, 80);
-});
+/*
+수동 테스트 케이스
 
-render();
-track.onscroll=()=>{};
+1. 카드 추가
+- 카드 1 상태에서 추가 → 카드 3 입력으로 이동
+- 카드 2 상태에서 추가 → 카드 3 입력으로 이동
+- 카드 3 상태에서 추가 → 카드 4 입력으로 이동
+- 어떤 위치에서 추가하든 새로 추가된 마지막 카드가 선택되어야 함
+
+2. 카드 삭제
+- 카드 4 삭제 → 카드 3 입력으로 이동
+- 카드 3 삭제 → 카드 2 입력으로 이동
+- 카드 2 삭제 → 카드 1 입력으로 이동
+- 카드 1 삭제 → 카드 1 입력 유지
+- 카드가 2개일 때 삭제 클릭 → 최소 2개 안내
+
+3. 스크롤
+- 사용자가 미리보기 영역을 직접 가로 스크롤해도 현재 선택 카드가 임의로 바뀌지 않아야 함
+- 카드 이동은 카드 클릭, dot 클릭, 탭 클릭으로만 바뀌어야 함
+*/
