@@ -14,8 +14,8 @@
       <p>이미지, 타이틀, 본문, CTA를 입력하면 카카오톡 형태로 바로 확인할 수 있습니다.</p>
     </div>
     <div class="topBtns">
-      <button id="allBtn" class="btn ghost">한번에 보기</button>
-      <button id="addCard" class="btn dark">+ 캐러셀 추가</button>
+      <button id="allBtn" type="button" class="btn ghost">한번에 보기</button>
+      <button id="addCardBtn" type="button" class="btn dark">+ 캐러셀 추가</button>
     </div>
   </header>
 
@@ -25,8 +25,10 @@
         <div id="brandLogo" class="brandLogo">DEFENDER</div>
         <div id="brandName" class="brandName">(광고)DEFENDER</div>
       </div>
-      <div class="track" id="track"></div>
-      <div class="dots" id="dots"></div>
+      <div class="carouselWrap">
+        <div id="track" class="track"></div>
+      </div>
+      <div id="dots" class="dots"></div>
     </section>
 
     <section id="formPanel" class="form">
@@ -36,7 +38,7 @@
           <h2 id="formTitle">카드 1 입력</h2>
           <p>기본 2개, 최대 6개까지 구성 가능합니다.</p>
         </div>
-        <button id="removeCard" class="miniBtn">삭제</button>
+        <button id="removeCardBtn" type="button" class="miniBtn">삭제</button>
       </div>
 
       <div class="fields">
@@ -52,7 +54,7 @@
         <div class="field imageField">
           <label>이미지 <b>*</b></label>
           <div class="imageRow">
-            <button id="imageBtn" class="imageBtn">
+            <button id="imageBtn" type="button" class="imageBtn">
               <img id="thumb" alt="">
               <span>▧<br>이미지 삽입</span>
             </button>
@@ -84,7 +86,7 @@
         <div id="ctaField" class="field">
           <div class="ctaTop">
             <label>CTA 버튼 <b>*</b></label>
-            <button id="addCta" class="smallDark">CTA 추가</button>
+            <button id="addCtaBtn" type="button" class="smallDark">CTA 추가</button>
           </div>
           <div id="ctaForms" class="ctaForms"></div>
           <p class="err">CTA 버튼은 최대 2개까지 추가할 수 있습니다.</p>
