@@ -5,6 +5,7 @@ const MAX_TITLE = 20;
 const MAX_BODY = 180;
 const MAX_BUTTON = 8;
 const MAX_BREAKS = 2;
+const MAX_IMAGE_SIZE = 2 * 1024 * 1024;
 
 const DEFAULT_TITLE = "타이틀을 입력해주세요.";
 const DEFAULT_BODY = "내용을 입력해주세요.";
@@ -383,6 +384,12 @@ $("imageBtn").addEventListener("click", () => $("imageInput").click());
 $("imageInput").addEventListener("change", (event) => {
   const file = event.target.files[0];
   if (!file) return;
+
+  if (file.size > MAX_IMAGE_SIZE) {
+    showToast("이미지 용량이 2MB를 초과했습니다. 2MB 이하 파일만 업로드할 수 있습니다.");
+    event.target.value = "";
+    return;
+  }
 
   const reader = new FileReader();
   reader.onload = (readerEvent) => {
