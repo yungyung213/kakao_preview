@@ -154,7 +154,7 @@ select{height:39px;padding:0 11px;font-size:13px}
 .toast{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);display:none;background:#111827;color:#fff;border-radius:14px;padding:12px 16px;font-size:13px;font-weight:800;z-index:50}
 .toast.show{display:block}
 
-@media(max-width:1120px){
+@media(max-width:1260px){
   .app{width:100%;padding:20px 12px}
   .layout,.layout.singleMode,.layout.listMode{grid-template-columns:1fr}
   .preview,.formPanel,.layout.singleMode .formPanel,.layout.listMode .formPanel{width:100%}
