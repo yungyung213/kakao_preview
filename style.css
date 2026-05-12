@@ -1030,6 +1030,7 @@ select{height:39px;padding:0 11px;font-size:13px}
   flex-direction: column;
   align-items: flex-end;
   gap: 10px;
+  pointer-events: none;
 }
 
 .toolbox-list {
@@ -1217,4 +1218,11 @@ select{height:39px;padding:0 11px;font-size:13px}
 /* textarea resize 차단 (아래 요소 덮기 방지) */
 .textareaBox textarea {
   resize: none !important;
+}
+
+/* v45 toolbox pointer-events fix: toolbox 전체가 클릭을 가로채지 않도록 */
+.toolbox-list,
+.toolbox-toggle,
+.toolbox-item {
+  pointer-events: auto;
 }
