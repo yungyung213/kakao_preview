@@ -1220,9 +1220,14 @@ select{height:39px;padding:0 11px;font-size:13px}
   resize: none !important;
 }
 
-/* v45 toolbox pointer-events fix: toolbox 전체가 클릭을 가로채지 않도록 */
-.toolbox-list,
-.toolbox-toggle,
+/* v46 toolbox pointer-events fix: toolbox-list는 열렸을 때만 클릭 허용 */
+/* 닫힌 상태의 toolbox-list가 뒤 버튼 클릭을 가로채지 않도록 */
+.toolbox-toggle {
+  pointer-events: auto;
+}
+
+/* toolbox-list는 기본적으로 pointer-events: none (숨겨진 상태) */
+/* .toolbox.open 일 때만 auto로 전환 (위 .toolbox.open .toolbox-list 규칙에서 처리됨) */
 .toolbox-item {
   pointer-events: auto;
 }
