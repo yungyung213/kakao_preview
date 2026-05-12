@@ -1,105 +1,125 @@
 <!doctype html>
 <html lang="ko">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>카카오 캐러셀 피드 미리보기</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>카카오 메시지 타입 미리보기</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="page">
-  <header class="top">
-    <div>
-      <h1>카카오 캐러셀 피드 미리보기</h1>
-      <p>이미지, 타이틀, 본문, CTA를 입력하면 카카오톡 형태로 바로 확인할 수 있습니다.<br>기본 2개, 최대 6개까지 구성 가능합니다.</p>
-    </div>
-    <div class="topBtns">
-      <button id="allBtn" type="button" class="btn ghost">한번에 보기</button>
-      <button id="addCardBtn" type="button" class="btn dark">+ 캐러셀 추가</button>
-    </div>
-  </header>
+  <div class="app">
+    <header class="header">
+      <h1>카카오 메시지 타입 미리보기</h1>
+      <p>저장되지 않으니 참고용으로만 사용하세요!</p>
+    </header>
 
-  <main id="layout" class="layout">
-    <section id="preview" class="preview">
-      <div class="brand">
-        <div id="brandLogo" class="brandLogo">DEFENDER</div>
-        <div id="brandName" class="brandName">(광고)DEFENDER</div>
-      </div>
-      <div class="carouselWrap">
-        <div id="track" class="track"></div>
-      </div>
-      <div id="dots" class="dots"></div>
-    </section>
+    <nav class="typeTabs" aria-label="메시지 타입">
+      <button type="button" class="typeTab active" data-type="carouselFeed">캐러셀 피드형</button>
+      <button type="button" class="typeTab" data-type="wideImage">와이드 이미지형</button>
+      <button type="button" class="typeTab" data-type="wideList">와이드 리스트형</button>
+    </nav>
 
-    <section id="formPanel" class="form">
-      <div id="tabs" class="tabs"></div>
-      <div class="formHead">
-        <div>
-          <h2 id="formTitle">카드 1 입력</h2>
-          
-        </div>
-        <button id="removeCardBtn" type="button" class="miniBtn">삭제</button>
-      </div>
-
-      <div class="fields">
-        <div class="field">
-          <label>브랜드명 <b>*</b></label>
-          <select id="brandSelect">
-            <option value="DEFENDER">(광고)DEFENDER</option>
-            <option value="Range Rover">(광고)Range Rover</option>
-            <option value="Discovery">(광고)Discovery</option>
-          </select>
+    <main id="layout" class="layout carouselMode">
+      <section id="preview" class="preview" aria-label="미리보기">
+        <div class="brand">
+          <div id="brandLogo" class="brandLogo">DEFENDER</div>
+          <div id="brandName" class="brandName">(광고)DEFENDER</div>
         </div>
 
-        <div class="field imageField">
-          <label>이미지 <b>*</b></label>
-          <div class="imageRow">
-            <button id="imageBtn" type="button" class="imageBtn">
-              <img id="thumb" alt="">
-              <span>▧<br>이미지 삽입</span>
-            </button>
-            <div class="imageGuide">
-              <p>권장 사이즈: <strong>600 × 800px</strong></p>
-              <p>파일 용량: <strong>2MB 이하</strong></p>
+        <div id="previewArea"></div>
+        <div id="dots" class="dots"></div>
+      </section>
+
+      <aside id="formPanel" class="formPanel">
+        <div id="formActions" class="formActions">
+          <button id="allBtn" type="button" class="btn ghost">펼쳐보기</button>
+          <button id="addCardBtn" type="button" class="btn blue">+ 캐러셀 추가</button>
+        </div>
+
+        <div id="cardTabs" class="cardTabs"></div>
+
+        <div class="formHead">
+          <div>
+            <h2 id="formTitle">캐러셀 피드형 입력</h2>
+            <p id="formDesc" class="visuallyHidden"></p>
+          </div>
+          <button id="removeCardBtn" type="button" class="miniBtn">삭제</button>
+        </div>
+
+        <div class="fields">
+          <div class="field">
+            <label>브랜드명 <b>*</b></label>
+            <select id="brandSelect">
+              <option value="DEFENDER">(광고)DEFENDER</option>
+              <option value="Range Rover">(광고)Range Rover</option>
+              <option value="Discovery">(광고)Discovery</option>
+            </select>
+          </div>
+
+          <div id="imageField" class="field">
+            <label>이미지 <b>*</b></label>
+            <div class="imageRow">
+              <button id="imageBtn" type="button" class="imageBtn">
+                <img id="thumb" alt="">
+                <span>▧<br>이미지 삽입</span>
+              </button>
+              <div id="imageSizeGuide" class="imageGuide"></div>
             </div>
+            <input id="imageLinkInput" class="plainInput" type="text" placeholder="이미지 링크 https://">
             <input id="imageInput" type="file" accept="image/*" hidden>
+            <input id="listImageInput" type="file" accept="image/*" hidden>
           </div>
-          <input id="imageLinkInput" class="imageLinkInput" type="text" placeholder="이미지 링크 https://">
-        </div>
 
-        <div id="titleField" class="field">
-          <label>타이틀 <b>*</b></label>
-          <div class="inputBox">
-            <input id="titleInput" maxlength="20" placeholder="타이틀을 입력해주세요.">
-            <em id="titleCount">0/20자</em>
+          <div id="titleField" class="field">
+            <label>타이틀 <b>*</b></label>
+            <div class="inputBox">
+              <input id="titleInput" type="text" placeholder="타이틀을 입력해주세요.">
+              <em id="titleCount">0/20자</em>
+            </div>
           </div>
-        </div>
 
-        <div id="bodyField" class="field">
-          <div class="labelRow">
-            <label>내용 <b>*</b></label>
-            <p id="breakCount">줄바꿈 0/2회</p>
+          <div id="bodyField" class="field">
+            <div class="labelRow">
+              <label>내용 <b>*</b></label>
+              <p id="breakCount">줄바꿈 0/2회</p>
+            </div>
+            <div class="textareaBox">
+              <textarea id="bodyInput" placeholder="내용을 입력해주세요."></textarea>
+              <em id="bodyCount">0/180자</em>
+            </div>
+            <p class="fieldError">본문 줄바꿈은 최대 2회까지만 권장됩니다.</p>
           </div>
-          <div class="textareaBox">
-            <textarea id="bodyInput" maxlength="180" placeholder="내용을 입력해주세요."></textarea>
-            <em id="bodyCount">0/180자</em>
-          </div>
-          <p class="err">본문 줄바꿈은 최대 2회까지만 권장됩니다. 줄바꿈을 줄이면 다시 정상 표시됩니다.</p>
-        </div>
 
-        <div id="ctaField" class="field">
-          <div class="ctaTop">
-            <label>CTA 버튼 <b>*</b></label>
-            <button id="addCtaBtn" type="button" class="smallDark">CTA 추가</button>
+          <div id="listField" class="field hidden">
+            <button id="addListBtn" type="button" class="visuallyHidden">+ 리스트 추가</button>
+            <div id="listForms" class="listForms"></div>
           </div>
-          <div id="ctaForms" class="ctaForms"></div>
-          <p class="err">CTA 버튼은 최대 2개까지 추가할 수 있습니다.</p>
+
+          <div id="shareField" class="field hidden">
+            <label>공유하기</label>
+            <select id="shareSelect">
+              <option value="no">없음</option>
+              <option value="yes">있음</option>
+            </select>
+          </div>
+
+          <div id="ctaField" class="field">
+            <div class="ctaHeader">
+              <label>CTA</label>
+              <button id="addCtaBtn" type="button" class="btn blue small">+ CTA 추가</button>
+            </div>
+            <select id="ctaModeSelect" class="ctaModeSelect">
+              <option value="none">없음</option>
+              <option value="link">링크</option>
+            </select>
+            <div id="ctaForms" class="ctaForms"></div>
+          </div>
         </div>
-      </div>
-    </section>
-  </main>
-</div>
-<div id="toast" class="toast"></div>
-<script src="script.js"></script>
+      </aside>
+    </main>
+  </div>
+
+  <div id="toast" class="toast"></div>
+  <script src="script.js"></script>
 </body>
 </html>

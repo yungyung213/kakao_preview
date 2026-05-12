@@ -1,138 +1,871 @@
-
 *{box-sizing:border-box}
-body{margin:0;background:#f1f5f9;color:#111827;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans KR",Arial,"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif}
+html,body{margin:0;min-height:100%;background:#eef3f9;color:#0f172a;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans KR",Arial,"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif}
 button,input,textarea,select{font:inherit}
 button{cursor:pointer}
-.page{max-width:1500px;margin:0 auto;padding:18px}
-.top{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:18px}
-.top h1{margin:0;font-size:21px;letter-spacing:-.5px}
-.top p{margin:6px 0 0;color:#64748b;font-size:12px}
-.topBtns{display:flex;gap:8px}
-.btn{height:38px;border-radius:11px;padding:0 14px;font-size:13px;font-weight:700}
-.btn.dark{border:0;background:#2563eb;color:#fff}
-.btn.ghost{border:1px solid #cbd5e1;background:#fff;color:#334155}
-.btn.ghost.on{background:#334155;color:#fff}
-.layout{display:grid;grid-template-columns:minmax(700px,1fr) 470px;gap:20px;align-items:start}
-.layout.all{grid-template-columns:1fr}
-.layout.all .form{max-width:760px}
-.preview{position:sticky;top:18px;overflow:hidden;min-height:650px;padding:20px 28px 18px;border-radius:20px;background:#c9d4e2}
-.layout.all .preview{position:static}
-.brand{display:flex;align-items:flex-start;gap:8px;margin:0 0 6px;margin-left:48px;min-height:22px}
-.brandLogo{width:40px;height:40px;border-radius:999px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:6px;font-weight:700;letter-spacing:-.45px;box-shadow:0 1px 4px rgba(15,23,42,.08);white-space:nowrap;flex:0 0 40px;position:absolute;left:28px;top:20px}
-.brandLogo.range{font-size:4.4px}
-.brandLogo.discovery{font-size:5px}
-.brandName{font-size:15px;font-weight:600;letter-spacing:-.45px;line-height:1.15;padding-top:0}
+.app{width:1180px;margin:0 auto;padding:28px 0 32px}
+.header{text-align:center;margin:0 0 18px}
+.header h1{margin:0;font-size:24px;line-height:1.25;font-weight:900;letter-spacing:-.6px}
+.header p{margin:10px 0 0;color:#64748b;font-size:13px}
+.typeTabs{display:flex;justify-content:center;gap:8px;margin:0 0 18px}
+.typeTab{height:38px;border:0;border-radius:999px;background:#e6edf5;color:#475569;padding:0 18px;font-size:13px;font-weight:900}
+.typeTab.active{background:#0f172a;color:#fff}
 
-/* 브랜드 로고 너비만큼 카드 시작 위치를 오른쪽으로 밀어 레퍼런스 레이아웃처럼 정렬 */
-.carouselWrap{margin-left:48px;overflow:hidden;margin-top:0}
-.track{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.layout{display:grid;grid-template-columns:760px 400px;gap:20px;align-items:start}
+.layout.singleMode,.layout.listMode{grid-template-columns:420px 430px;gap:36px;justify-content:center}
+
+.preview{position:relative;background:#c9d5e2;border-radius:18px;min-height:650px;padding:20px 22px 18px;overflow:hidden}
+.brand{position:relative;display:flex;align-items:flex-start;gap:8px;margin-left:56px;margin-bottom:10px;min-height:42px}
+.brandLogo{position:absolute;left:-56px;top:0;width:42px;height:42px;border-radius:999px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:6px;font-weight:900;letter-spacing:-.45px;box-shadow:0 1px 4px rgba(15,23,42,.12);white-space:nowrap}
+.brandLogo.range{font-size:4.4px}.brandLogo.discovery{font-size:5px}
+.brandName{font-size:15px;font-weight:800;line-height:1.2;letter-spacing:-.45px;margin-top:3px}
+
+.track{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;margin-left:56px}
 .track::-webkit-scrollbar{display:none}
-
-.card{width:252px;min-width:252px;min-height:555px;border-radius:14px;background:#fff;overflow:hidden;display:flex;flex-direction:column;scroll-snap-align:start;opacity:1;transition:transform .18s ease}
-.card.active{}
-.card:focus{outline:3px solid rgba(15,23,42,.2);outline-offset:2px}
+.card{width:252px;min-width:252px;min-height:555px;border-radius:14px;background:#fff;overflow:hidden;display:flex;flex-direction:column;scroll-snap-align:start}
+.card.editing{box-shadow:inset 0 0 0 3px #2563eb}
 .img{aspect-ratio:3/4;background:#f8fafc;color:#cbd5e1;display:flex;align-items:center;justify-content:center;text-align:center;font-size:11px}
-.img img{width:100%;height:100%;object-fit:cover;display:block}
+.img img,.imageAnchor img,.wideImg img,.listHero img,.listThumb img{width:100%;height:100%;object-fit:contain;background:#f8fafc;display:block}
+.imageAnchor{display:block;width:100%;height:100%;color:inherit;text-decoration:none}
 .content{padding:14px 13px 9px}
-.title{margin:0;font-size:16px;font-weight:500;letter-spacing:-.5px;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.title{margin:0;font-size:16px;font-weight:500;line-height:1.35;letter-spacing:-.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .line{height:1px;background:#e5e7eb;margin:10px 0}
 .body{margin:0;font-size:14px;line-height:1.48;letter-spacing:-.42px;white-space:pre-wrap;word-break:break-word;overflow-wrap:anywhere}
 .body.errText{color:#ef4444}
 .ctas{display:flex;gap:7px;padding:10px 11px 12px;margin-top:auto}
-.cta{height:34px;border:1px solid #e5e7eb;border-radius:8px;background:#f8fafc;display:flex;align-items:center;justify-content:center;flex:1;min-width:0;text-decoration:none;color:#111827;font-size:13px}
+.cta{height:34px;border:1px solid #e5e7eb;border-radius:8px;background:#f8fafc;display:flex;align-items:center;justify-content:center;flex:1 1 0;min-width:0;text-decoration:none;color:#111827;font-size:13px}
 .cta span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.dots{display:flex;justify-content:center;gap:9px;margin-top:28px}
-.dot{width:14px;height:14px;border-radius:999px;border:0;background:rgba(255,255,255,.96)}
-.dot.active{width:30px;background:#475569}
-.layout.all .track{overflow:visible;scroll-snap-type:none;flex-wrap:nowrap;gap:8px}
-.layout.all .card{width:252px;min-width:252px}
-.form{padding:15px;border-radius:20px;background:#fff;box-shadow:0 1px 2px rgba(15,23,42,.08)}
-.tabs{display:flex;gap:7px;overflow-x:auto;margin-bottom:12px;scrollbar-width:none}
-.tabs::-webkit-scrollbar{display:none}
-.tab{border:0;border-radius:999px;background:#f1f5f9;color:#64748b;padding:7px 12px;font-size:12px;font-weight:700}
+.dots{display:flex;justify-content:center;gap:9px;margin-top:26px}
+.dot{width:14px;height:14px;border-radius:999px;border:0;background:#fff;opacity:.45}
+.dot.active{width:30px;background:#475569;opacity:1}
+
+/* 펼쳐보기: v22 방식. 입력창은 그대로, 미리보기 영역 안에서 카드만 펼침 */
+.layout.expanded .preview{overflow:hidden}
+.layout.expanded .track{overflow:visible;scroll-snap-type:none;flex-wrap:nowrap}
+.layout.expanded .dots{display:none}
+.layout.expanded .card{width:132px;min-width:132px;min-height:372px;border-radius:12px}
+.layout.expanded .content{padding:10px 8px 6px}
+.layout.expanded .title{font-size:11px}
+.layout.expanded .body{font-size:10px}
+.layout.expanded .ctas{padding:8px;gap:5px}
+.layout.expanded .cta{height:26px;font-size:10px}
+
+/* wide image */
+.singlePreview{width:320px;margin-left:56px;background:#fff;border-radius:14px;overflow:hidden}
+.singlePreview.editing{box-shadow:inset 0 0 0 3px #2563eb}
+.wideImg{aspect-ratio:4/3;background:#f8fafc;color:#cbd5e1;display:flex;align-items:center;justify-content:center;text-align:center;font-size:13px}
+.singleContent{padding:14px;min-height:74px}
+
+/* wide list */
+.listCard{width:320px;margin-left:56px;background:#fff;border-radius:14px;overflow:hidden}
+.listCard.editing{box-shadow:inset 0 0 0 3px #2563eb}
+.wideListPreviewTitle{text-align:center;padding:12px 14px 10px;font-size:15px;font-weight:700}
+.listHero{aspect-ratio:2/1;background:#f8fafc;color:#cbd5e1;display:flex;align-items:center;justify-content:center;text-align:center;font-size:12px}
+.listItems{padding:10px 14px;display:flex;flex-direction:column;gap:9px}
+.listItem{display:grid;grid-template-columns:42px 1fr;gap:8px;align-items:center;cursor:default}
+.listItem.clickable{cursor:pointer}
+.listThumb{width:42px;height:42px;border-radius:8px;background:#f1f5f9;overflow:hidden;border:1px solid #e5e7eb}
+.listItem strong{display:block;font-size:12px;font-weight:800;margin-bottom:2px;color:#111827}
+.listItem p{margin:0;font-size:12px;line-height:1.35;color:#111827;word-break:break-word;overflow-wrap:anywhere}
+.previewLimitError{color:#ef4444!important}
+.listActions{display:flex;gap:6px;padding:0 14px 12px}
+.listActions .ctas{display:flex;gap:6px;flex:1 1 0;padding:0;margin:0}
+.listActions .shareBtn{order:2;flex:1 1 0}
+.shareBtn{height:34px;border:1px solid #e5e7eb;border-radius:8px;background:#f8fafc;display:flex;align-items:center;justify-content:center;font-size:13px}
+
+/* form */
+.formPanel{background:#fff;border-radius:18px;padding:16px;box-shadow:0 1px 2px rgba(15,23,42,.08);width:400px}
+.layout.singleMode .formPanel,.layout.listMode .formPanel{width:430px}
+.formActions{display:flex;justify-content:flex-end;gap:8px;margin-bottom:12px}
+.formActions.hidden{display:none}
+.btn{height:36px;border-radius:10px;border:0;padding:0 14px;font-size:12px;font-weight:900;display:inline-flex;align-items:center;justify-content:center;line-height:1;min-width:110px}
+.btn.ghost{background:#fff;border:1px solid #cbd5e1;color:#334155}
+.btn.ghost.on{background:#334155;color:#fff}
+.btn.blue,.smallDark{background:#2563eb;color:#fff}
+.btn.blue:hover,.smallDark:hover{background:#1d4ed8}
+.btn.small{min-width:110px}
+.cardTabs{display:flex;gap:7px;overflow-x:auto;margin-bottom:12px;scrollbar-width:none}
+.cardTabs::-webkit-scrollbar{display:none}
+.tab{border:0;border-radius:999px;background:#f1f5f9;color:#64748b;padding:7px 12px;font-size:12px;font-weight:800}
 .tab.active{background:#111827;color:#fff}
 .formHead{display:flex;justify-content:space-between;align-items:center;gap:12px;border-bottom:1px solid #e5e7eb;padding-bottom:12px}
-.formHead h2{margin:0;font-size:17px}
-.formHead p{margin:4px 0 0;font-size:12px;color:#64748b}
-.miniBtn{border:1px solid #dbe2ea;background:#fff;border-radius:10px;padding:7px 10px;color:#475569;font-size:12px;font-weight:700}
+.formHead h2{margin:0;font-size:17px;font-weight:900;letter-spacing:-.4px}
+.miniBtn{border:1px solid #dbe2ea;background:#fff;border-radius:10px;padding:7px 10px;color:#475569;font-size:12px;font-weight:800}
 .fields{display:flex;flex-direction:column;gap:13px;margin-top:13px}
-.field label{display:block;margin-bottom:6px;font-size:13px;font-weight:700}
+.field label{display:block;margin-bottom:6px;font-size:13px;font-weight:900}
 .field b{color:#ef4444}
-select,input,textarea{width:100%;border:1px solid #cbd5e1;border-radius:10px;outline:0;background:#fff}
+.hidden{display:none!important}
+select,input,textarea{width:100%;border:1px solid #cbd5e1;border-radius:10px;background:#fff;outline:0}
 select{height:39px;padding:0 11px;font-size:13px}
+.plainInput{height:38px;padding:0 10px;font-size:13px;margin-top:8px}
 .imageRow{display:grid;grid-template-columns:78px 1fr;gap:9px}
-.imageBtn{width:78px;aspect-ratio:3/4;border:2px dashed #cbd5e1;border-radius:12px;background:#f8fafc;color:#94a3b8;overflow:hidden;font-size:11px;font-weight:700}
-.imageBtn img{display:none;width:100%;height:100%;object-fit:cover}
-.imageBtn.has img{display:block}
-.imageBtn.has span{display:none}
-.imageGuide{border-radius:12px;background:#f8fafc;display:flex;align-items:center;padding:10px;font-size:12px}
+.imageBtn{width:78px;aspect-ratio:3/4;border:1px dashed #cbd5e1;border-radius:12px;background:#f8fafc;color:#94a3b8;overflow:hidden;font-size:11px;font-weight:800}
+.imageBtn img{display:none;width:100%;height:100%;object-fit:contain;background:#f8fafc}
+.imageBtn.has img{display:block}.imageBtn.has span{display:none}
+.imageGuide{border-radius:12px;background:#f8fafc;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:4px;padding:10px;font-size:12px;line-height:1.45}
+.imageGuide p{margin:0}
 .inputBox,.textareaBox{position:relative}
 .inputBox input{height:40px;padding:0 64px 0 12px;font-size:13px}
-.inputBox em,.textareaBox em{position:absolute;right:12px;color:#94a3b8;font-style:normal;font-size:11.5px;font-weight:700;pointer-events:none}
+.inputBox em,.textareaBox em{position:absolute;right:12px;color:#94a3b8;font-style:normal;font-size:11.5px;font-weight:800;pointer-events:none}
 .inputBox em{top:50%;transform:translateY(-50%)}
 .labelRow{display:flex;align-items:flex-end;justify-content:space-between}
-.labelRow p{margin:0 0 6px;color:#94a3b8;font-size:11.5px;font-weight:700}
+.labelRow p{margin:0 0 6px;color:#94a3b8;font-size:11.5px;font-weight:800}
 .textareaBox textarea{height:126px;min-height:126px;resize:vertical;padding:11px 12px 30px;font-size:13px;line-height:1.55;font-family:inherit;word-break:break-word;overflow-wrap:anywhere}
 .textareaBox em{bottom:9px;background:#fff;padding-left:6px}
-.err{display:none;margin:7px 0 0;color:#ef4444;font-size:12px;font-weight:700}
-.isErr label,.isErr .labelRow p,.isErr em{color:#ef4444}
-.isErr textarea,.isErr .ctaBlock{border-color:#ef4444}
-.isErr .err{display:block}
-.shake{animation:shake .38s ease-in-out}
-@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-5px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
-.ctaTop{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-.ctaTop label{margin:0}
-.smallDark{border:0;border-radius:10px;background:#111827;color:#fff;padding:7px 11px;font-size:12px;font-weight:700}
+.fieldError{display:none;margin:7px 0 0;color:#ef4444;font-size:12px;font-weight:800}
+.isErr .fieldError{display:block}
+
+/* CTA */
+.ctaHeader{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.ctaHeader label{margin:0}
+.carouselMode #ctaModeSelect{display:none}
+.singleMode #addCtaBtn,.listMode #addCtaBtn{display:none!important}
+.ctaModeSelect{height:39px;margin-bottom:8px}
 .ctaForms{display:flex;flex-direction:column;gap:8px}
+.ctaFieldNoButton .ctaForms{display:none}
 .ctaBlock{border:1px solid #e5e7eb;border-radius:13px;padding:10px}
-.ctaBlockHead{display:flex;justify-content:space-between;margin-bottom:8px;font-size:12.5px;font-weight:700}
-.textBtn{border:0;background:transparent;color:#94a3b8;font-size:12px;font-weight:700}
+.ctaBlockHead{display:flex;justify-content:space-between;margin-bottom:8px;font-size:12.5px;font-weight:800}
+.textBtn{border:0;background:transparent;color:#94a3b8;font-size:12px;font-weight:800}
 .ctaGrid{display:grid;grid-template-columns:130px 1fr;gap:8px}
 .ctaGrid input{height:38px;padding:0 10px;font-size:13px}
-.toast{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);display:none;background:#111827;color:#fff;border-radius:14px;padding:12px 16px;font-size:13px;font-weight:700;z-index:50}
+
+/* wide list form as brand/title style */
+.listForms{display:flex;flex-direction:column;gap:14px}
+.listBlock{border:0;background:transparent;padding:0;margin:0}
+.listBlockHead{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:8px;gap:8px}
+.listBlockHead strong{font-size:13px;font-weight:900}
+.guideBadge{font-size:10px;color:#64748b;line-height:1.25;text-align:right;font-weight:800}
+.listBlockBody{display:grid;grid-template-columns:96px 1fr;gap:10px;align-items:center;border:1px solid #cbd5e1;border-radius:12px;background:#fff;padding:10px}
+.listBlock:first-child .listBlockBody{grid-template-columns:112px 1fr}
+.listUploadBtn{width:96px;aspect-ratio:1/1;border:1px dashed #cbd5e1;border-radius:12px;background:#f8fafc;color:#94a3b8;overflow:hidden;font-size:10.5px;font-weight:900;line-height:1.25}
+.listBlock:first-child .listUploadBtn{width:112px;aspect-ratio:2/1}
+.listUploadBtn img{display:none;width:100%;height:100%;object-fit:contain;background:#f8fafc}
+.listUploadBtn.has img{display:block}.listUploadBtn.has span{display:none}
+.listTextInputs{display:flex;flex-direction:column;gap:8px;min-width:0}
+.listTextInputs .inputWrap{position:relative;display:block}
+.listTextInputs .listTitle,.listTextInputs .listDesc,.listTextInputs .listUrl{height:38px;border:1px solid #cbd5e1;border-radius:10px;padding:0 58px 0 12px;font-size:13px;width:100%}
+.listTextInputs .listUrl{padding-right:12px}
+.listTextInputs .inputWrap em{position:absolute;right:10px;top:50%;transform:translateY(-50%);color:#94a3b8;font-style:normal;font-size:11px;font-weight:900;pointer-events:none}
+.limitMsg{display:none;margin:5px 0 0;color:#ef4444;font-size:11.5px;font-weight:800}
+.limitMsg.show{display:block}
+.charError{border-color:#ef4444!important}
+.countError{color:#ef4444!important}
+.listAddInline{display:block;margin:10px 0 0 auto;width:auto}
+
+.toast{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);display:none;background:#111827;color:#fff;border-radius:14px;padding:12px 16px;font-size:13px;font-weight:800;z-index:50}
 .toast.show{display:block}
-@media(max-width:1120px){.layout{grid-template-columns:1fr}.preview{position:static;min-height:0}}
-@media(max-width:640px){.page{padding:12px}.top{flex-direction:column;align-items:stretch}.topBtns{flex-direction:column}.btn{width:100%}.preview,.form{border-radius:18px;padding:12px}.carouselWrap{margin-left:0}.card{width:74vw;min-width:238px}.ctaGrid{grid-template-columns:1fr}}
 
-.dot{background:#fff!important;opacity:.42!important}.dot.active{background:#475569!important;opacity:1!important}
-
-@media(max-width:640px){
-  .brand{margin-left:46px}
-  .brandLogo{left:12px;top:12px}
+@media(max-width:1120px){
+  .app{width:100%;padding:20px 12px}
+  .layout,.layout.singleMode,.layout.listMode{grid-template-columns:1fr}
+  .preview,.formPanel,.layout.singleMode .formPanel,.layout.listMode .formPanel{width:100%}
 }
 
-.imageGuide{display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;text-align:center!important;gap:4px!important;line-height:1.45!important}
-.imageGuide p{margin:0!important}
-
-
-.card.editing{
-  outline:3px solid #2563eb;
-  outline-offset:3px;
+/* v18 id mismatch fix helpers */
+.visuallyHidden{
+  position:absolute!important;
+  width:1px!important;
+  height:1px!important;
+  padding:0!important;
+  margin:-1px!important;
+  overflow:hidden!important;
+  clip:rect(0,0,0,0)!important;
+  white-space:nowrap!important;
+  border:0!important;
 }
 
-.card.editing{outline:none!important;box-shadow:inset 0 0 0 3px #2563eb!important}
+/* v19 fixes */
 
-.track{gap:8px!important}
-.layout.all .track{gap:8px!important}
-.card.editing{box-shadow:inset 0 0 0 3px #2563eb!important}
-
-.imageLinkInput{
-  margin-top:8px;
-  height:38px;
-  padding:0 10px;
-  font-size:13px;
+/* 1. 각 메뉴 상단 여백 */
+.typeTabs{
+  margin-top:22px!important;
+  margin-bottom:22px!important;
 }
 
-.imageAnchor{
+/* 2. 미리보기 내 브랜드명과 카드 간격 축소 */
+.brand{
+  margin-bottom:4px!important;
+}
+.track,
+.singlePreview,
+.listCard{
+  margin-top:0!important;
+}
+
+/* 3. 캐러셀 펼쳐보기: 축소 금지, 입력창은 아래로 내려가게 */
+.layout.carouselMode.expanded{
+  grid-template-columns:760px!important;
+  row-gap:20px!important;
+}
+.layout.carouselMode.expanded .preview{
+  width:760px!important;
+  min-width:760px!important;
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+}
+.layout.carouselMode.expanded .formPanel{
+  display:block!important;
+  width:760px!important;
+}
+.layout.carouselMode.expanded .track{
+  overflow:visible!important;
+  flex-wrap:nowrap!important;
+  scroll-snap-type:none!important;
+}
+.layout.carouselMode.expanded .card{
+  width:252px!important;
+  min-width:252px!important;
+  min-height:555px!important;
+  border-radius:14px!important;
+}
+.layout.carouselMode.expanded .content{
+  padding:14px 13px 9px!important;
+}
+.layout.carouselMode.expanded .title{
+  font-size:16px!important;
+}
+.layout.carouselMode.expanded .body{
+  font-size:14px!important;
+}
+.layout.carouselMode.expanded .ctas{
+  padding:10px 11px 12px!important;
+  gap:7px!important;
+}
+.layout.carouselMode.expanded .cta{
+  height:34px!important;
+  font-size:13px!important;
+}
+.layout.carouselMode.expanded .dots{
+  display:flex!important;
+}
+
+/* 4. 와이드리스트 텍스트 볼드 과함 조정 */
+.listCard,
+.listCard *{
+  font-weight:400;
+}
+.wideListPreviewTitle{
+  font-weight:500!important;
+}
+.listItem strong{
+  font-weight:500!important;
+}
+.listItem p{
+  font-weight:400!important;
+}
+.listActions .shareBtn,
+.listActions .cta{
+  font-weight:400!important;
+  font-size:13px!important;
+}
+
+/* 5. 와이드 리스트: 하단 리스트 내용 입력 삭제 */
+.listMode .listBlock:not(:first-child) .descWrap{
+  display:none!important;
+}
+
+/* 6. 버튼명 글자 배율 레퍼런스에 맞게 */
+.listCard .cta,
+.listCard .shareBtn{
+  height:34px!important;
+  font-size:13px!important;
+  font-weight:400!important;
+}
+
+/* 7. 리스트추가 버튼 정리 */
+.listAddInline{
+  background:#2563eb!important;
+  color:#fff!important;
+  min-width:110px!important;
+  height:36px!important;
+  border-radius:10px!important;
+  padding:0 14px!important;
+  font-size:12px!important;
+  font-weight:800!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  margin:10px 0 0 auto!important;
+  border:0!important;
+}
+
+/* 8. 삭제는 캐러셀 피드형 삭제 버튼과 같은 스타일 */
+.listMode .listBlockHead .textBtn{
+  border:1px solid #dbe2ea!important;
+  background:#fff!important;
+  border-radius:10px!important;
+  padding:7px 10px!important;
+  color:#475569!important;
+  font-size:12px!important;
+  font-weight:800!important;
+}
+
+/* 메인 섹션 삭제는 숨김 유지 */
+.listMode .listBlock:first-child .textBtn{
+  visibility:hidden!important;
+}
+
+/* 9. 사이즈 및 용량 가이드 줄바꿈 */
+.guideBadge{
+  white-space:pre-line!important;
+  font-size:10px!important;
+  line-height:1.25!important;
+  text-align:right!important;
+  color:#64748b!important;
+}
+
+/* 10. 와이드 리스트 미리보기 오른쪽 여백 조금 더 */
+.layout.listMode{
+  grid-template-columns:420px 430px!important;
+  gap:42px!important;
+}
+.layout.listMode .preview{
+  min-height:620px!important;
+}
+
+/* 11. 페이지 하단 여백 완화 */
+.app{
+  padding-bottom:24px!important;
+}
+
+/* 12. 미리보기 리스트 기본 텍스트가 과하게 커지지 않도록 */
+.listItem{
+  grid-template-columns:42px 1fr!important;
+}
+
+/* v20 requested fixes */
+
+/* 전체: 필수 표시 * 삭제 */
+.field b,
+.labelRow b{
+  display:none!important;
+}
+
+/* 전체: 메뉴 상단 여백 유지 */
+.typeTabs{
+  margin-top:24px!important;
+  margin-bottom:24px!important;
+}
+
+/* 전체: 미리보기 내 브랜드명과 카드 사이 간격 축소 */
+.brand{
+  min-height:30px!important;
+  margin-bottom:0!important;
+}
+.track,
+.singlePreview,
+.listCard{
+  margin-top:0!important;
+}
+
+/* 캐러셀 피드형: 펼쳐보기는 입력창을 아래로 내리고, 미리보기는 넓게 */
+.layout.carouselMode.expanded{
+  grid-template-columns:1180px!important;
+  row-gap:22px!important;
+}
+.layout.carouselMode.expanded .preview{
+  width:1180px!important;
+  min-width:1180px!important;
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+}
+.layout.carouselMode.expanded .formPanel{
+  display:block!important;
+  width:760px!important;
+  margin:0 auto!important;
+}
+.layout.carouselMode.expanded .track{
+  overflow:visible!important;
+  flex-wrap:nowrap!important;
+  scroll-snap-type:none!important;
+}
+.layout.carouselMode.expanded .card{
+  width:252px!important;
+  min-width:252px!important;
+  min-height:555px!important;
+  border-radius:14px!important;
+}
+.layout.carouselMode.expanded .content{
+  padding:14px 13px 9px!important;
+}
+.layout.carouselMode.expanded .title{
+  font-size:16px!important;
+}
+.layout.carouselMode.expanded .body{
+  font-size:14px!important;
+}
+.layout.carouselMode.expanded .ctas{
+  padding:10px 11px 12px!important;
+  gap:7px!important;
+}
+.layout.carouselMode.expanded .cta{
+  height:34px!important;
+  font-size:13px!important;
+}
+
+/* 캐러셀 피드형: 카드 내부 간격 조금 확대 */
+.carouselMode .card .content{
+  padding-top:17px!important;
+}
+.carouselMode .card .line{
+  margin:12px 0!important;
+}
+.carouselMode .card .ctas{
+  padding-top:12px!important;
+}
+
+/* 와이드 리스트형: 가이드 볼드 해제 + 타이틀 아래 위치 */
+.listMode .listBlockHead{
+  display:flex!important;
+  align-items:flex-start!important;
+  justify-content:space-between!important;
+}
+.listMode .listTitleGroup{
+  display:flex!important;
+  flex-direction:column!important;
+  gap:3px!important;
+}
+.listMode .guideBadge{
+  display:block!important;
+  white-space:pre-line!important;
+  font-size:10px!important;
+  font-weight:400!important;
+  line-height:1.3!important;
+  color:#64748b!important;
+  text-align:left!important;
+}
+
+/* 삭제 버튼은 오른쪽 정렬 유지 */
+.listMode .listBlockHead .textBtn{
+  flex:0 0 auto!important;
+}
+
+/* 반응형에서 펼쳐보기 폭 보정 */
+@media(max-width:1220px){
+  .layout.carouselMode.expanded{
+    grid-template-columns:1fr!important;
+  }
+  .layout.carouselMode.expanded .preview{
+    width:100%!important;
+    min-width:0!important;
+  }
+  .layout.carouselMode.expanded .formPanel{
+    width:100%!important;
+  }
+}
+
+/* v21 guide text single-line fix */
+.listMode .guideBadge,
+.guideBadge{
+  white-space:nowrap!important;
+  display:block!important;
+  font-weight:400!important;
+}
+.listMode .listTitleGroup{
+  min-width:0!important;
+}
+
+/* v22 spacing + expanded carousel */
+
+/* 와이드 이미지형/와이드 리스트형: 미리보기와 입력창 사이 간격 축소 */
+.layout.singleMode,
+.layout.listMode{
+  grid-template-columns:420px 430px!important;
+  gap:22px!important;
+  justify-content:center!important;
+}
+
+/* 와이드 리스트형 미리보기 박스와 입력창 간 거리도 함께 축소 */
+.layout.listMode .preview,
+.layout.singleMode .preview{
+  margin-right:0!important;
+}
+
+/* 와이드 리스트형: 메인 섹션과 하단 리스트 사이 구분선 */
+.listMode .listBlock:first-child{
+  position:relative!important;
+  padding-bottom:20px!important;
+  margin-bottom:20px!important;
+  border-bottom:1px solid #e5e7eb!important;
+}
+
+/* 리스트 추가 버튼이 구분선 위에 붙지 않도록 */
+.listMode .listBlock:first-child + .listAddInline{
+  margin-top:-10px!important;
+  margin-bottom:18px!important;
+}
+
+/* 캐러셀 펼쳐보기: 최대 6개가 한 번에 보이도록 더 넓게 */
+.layout.carouselMode.expanded{
+  grid-template-columns:1540px!important;
+  width:1540px!important;
+  max-width:1540px!important;
+  margin-left:50%!important;
+  transform:translateX(-50%)!important;
+}
+.layout.carouselMode.expanded .preview{
+  width:1540px!important;
+  min-width:1540px!important;
+  overflow:visible!important;
+}
+.layout.carouselMode.expanded .track{
+  gap:8px!important;
+  overflow:visible!important;
+  flex-wrap:nowrap!important;
+  margin-left:56px!important;
+}
+.layout.carouselMode.expanded .card{
+  width:230px!important;
+  min-width:230px!important;
+  min-height:535px!important;
+}
+.layout.carouselMode.expanded .formPanel{
+  width:760px!important;
+  margin:18px auto 0!important;
+}
+
+/* 작은 화면에서는 화면 밖으로 너무 밀리지 않게 가로 스크롤 허용 */
+@media(max-width:1560px){
+  .layout.carouselMode.expanded{
+    width:100%!important;
+    max-width:100%!important;
+    grid-template-columns:1fr!important;
+    margin-left:auto!important;
+    transform:none!important;
+  }
+  .layout.carouselMode.expanded .preview{
+    width:100%!important;
+    min-width:0!important;
+    overflow-x:auto!important;
+  }
+  .layout.carouselMode.expanded .track{
+    width:max-content!important;
+  }
+}
+
+/* v23 wide list requested fixes */
+
+/* 메인 섹션 타이틀 입력란 삭제 */
+.listMode .listBlock:first-child .titleWrap{
+  display:none!important;
+}
+
+/* 메인 섹션 문구는 대표 이미지 위 오버레이로 노출 */
+.listHero{
+  position:relative!important;
+  overflow:hidden!important;
+}
+.listHeroOverlay{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  min-height:42px;
+  padding:12px 14px 10px;
+  display:flex;
+  align-items:flex-end;
+  color:#fff;
+  font-size:16px;
+  line-height:1.3;
+  font-weight:500;
+  letter-spacing:-.45px;
+  background:linear-gradient(to top, rgba(0,0,0,.58), rgba(0,0,0,0));
+  word-break:break-word;
+  overflow-wrap:anywhere;
+  white-space:pre-wrap;
+}
+
+/* 메인 섹션을 하단 리스트로 반복 노출하지 않음 */
+.listItems .mainAsList{
+  display:none!important;
+}
+
+/* 리스트 추가 버튼은 하단 리스트 전체 아래로 이동 */
+.listAddInline{
+  margin:14px 0 0 auto!important;
+}
+
+/* 메인 섹션/하단 리스트 구분선은 메인섹션 아래에 유지 */
+.listMode .listBlock:first-child{
+  padding-bottom:20px!important;
+  margin-bottom:20px!important;
+  border-bottom:1px solid #e5e7eb!important;
+}
+
+/* v24 over-limit + carousel/list refinements */
+
+/* 전체: 글자수 초과 시 빨간색 */
+.inputBox.over input,
+.textareaBox.over textarea,
+.ctaBlock.over input,
+.listTextInputs .inputWrap.over input{
+  border-color:#ef4444!important;
+  color:#ef4444!important;
+}
+.inputBox.over em,
+.textareaBox.over em,
+.ctaBlock.over em,
+.listTextInputs .inputWrap.over em{
+  color:#ef4444!important;
+}
+.textareaBox.over + .fieldError{
+  display:block!important;
+}
+
+/* 캐러셀 피드형: 카드 수가 많아져도 형태 안정화 */
+.carouselMode .card .title{
+  font-size:15px!important;
+  line-height:1.35!important;
+}
+.carouselMode .card .body{
+  font-size:13px!important;
+  line-height:1.5!important;
+}
+.carouselMode .card .cta{
+  font-size:12px!important;
+}
+
+/* 캐러셀 피드형: CTA 섹션 위 구분선 */
+.carouselMode .card .ctas{
+  border-top:1px solid #e5e7eb!important;
+}
+
+/* 펼쳐보기에서도 CTA 선 유지 */
+.layout.carouselMode.expanded .card .ctas{
+  border-top:1px solid #e5e7eb!important;
+}
+
+/* 와이드 리스트형: 리스트 추가 버튼 상단 여백 축소 + 하단 구분선 */
+.listAddInline{
+  margin-top:6px!important;
+  margin-bottom:12px!important;
+}
+.listMode .listForms::after{
+  content:"";
   display:block;
   width:100%;
-  height:100%;
-  color:inherit;
-  text-decoration:none;
+  height:1px;
+  background:#e5e7eb;
+  margin:2px 0 14px;
 }
-.imageAnchor img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  display:block;
+
+/* 와이드 리스트형: 하단 리스트 미리보기 텍스트 크기 확대 */
+.listCard .listItem strong{
+  font-size:14px!important;
+  line-height:1.35!important;
+  font-weight:500!important;
+}
+.listCard .listItem p{
+  font-size:13px!important;
+  line-height:1.4!important;
+}
+
+/* v25 wide list preview text fixes */
+
+/* 와이드 리스트형 메인 섹션 오버레이 텍스트 왼쪽 정렬 */
+.listHeroOverlay{
+  justify-content:flex-start!important;
+  text-align:left!important;
+}
+
+/* 미리보기에서 글자수 초과 시 빨간색 */
+.previewOverText,
+.previewOverText *{
+  color:#ef4444!important;
+}
+
+/* v26 carousel CTA divider removal */
+.carouselMode .card .ctas,
+.layout.carouselMode.expanded .card .ctas{
+  border-top:0!important;
+}
+
+/* v27 carousel expanded scale fix */
+
+/* 펼쳐보기 시 접어보기와 동일한 카드/글자 배율 유지 */
+.layout.carouselMode.expanded{
+  grid-template-columns:1760px!important;
+  width:1760px!important;
+  max-width:1760px!important;
+  margin-left:50%!important;
+  transform:translateX(-50%)!important;
+  row-gap:22px!important;
+}
+
+.layout.carouselMode.expanded .preview{
+  width:1760px!important;
+  min-width:1760px!important;
+  overflow:visible!important;
+}
+
+.layout.carouselMode.expanded .track{
+  margin-left:56px!important;
+  gap:8px!important;
+  overflow:visible!important;
+  flex-wrap:nowrap!important;
+  scroll-snap-type:none!important;
+}
+
+/* 접어보기 카드와 동일한 스펙 */
+.layout.carouselMode.expanded .card{
+  width:252px!important;
+  min-width:252px!important;
+  min-height:555px!important;
+  border-radius:14px!important;
+}
+
+.layout.carouselMode.expanded .img{
+  aspect-ratio:3/4!important;
+}
+
+.layout.carouselMode.expanded .content{
+  padding:14px 13px 9px!important;
+}
+
+.layout.carouselMode.expanded .title{
+  font-size:15px!important;
+  line-height:1.35!important;
+}
+
+.layout.carouselMode.expanded .body{
+  font-size:13px!important;
+  line-height:1.5!important;
+}
+
+.layout.carouselMode.expanded .ctas{
+  padding:12px 11px 12px!important;
+  gap:7px!important;
+  border-top:0!important;
+}
+
+.layout.carouselMode.expanded .cta{
+  height:34px!important;
+  font-size:12px!important;
+}
+
+.layout.carouselMode.expanded .formPanel{
+  width:760px!important;
+  margin:18px auto 0!important;
+}
+
+.layout.carouselMode.expanded .dots{
+  display:flex!important;
+}
+
+/* 노트북 등 폭이 부족한 화면에서는 전체 폭은 유지하고 페이지/브라우저 가로 스크롤로 확인 */
+@media(max-width:1780px){
+  .layout.carouselMode.expanded{
+    width:1760px!important;
+    max-width:1760px!important;
+    grid-template-columns:1760px!important;
+    margin-left:0!important;
+    transform:none!important;
+  }
+  .layout.carouselMode.expanded .preview{
+    width:1760px!important;
+    min-width:1760px!important;
+    overflow:visible!important;
+  }
+}
+
+/* v28 dynamic expanded width by card count */
+
+/* 기존 v27의 고정 1760px 설정을 카드 수별 변수로 덮어쓰기 */
+.layout.carouselMode.expanded{
+  --expanded-width: 1180px;
+  grid-template-columns:var(--expanded-width)!important;
+  width:var(--expanded-width)!important;
+  max-width:var(--expanded-width)!important;
+}
+
+/* 카드 수별 펼쳐보기 폭 */
+.layout.carouselMode.expanded.cards-2{--expanded-width:760px;}
+.layout.carouselMode.expanded.cards-3{--expanded-width:940px;}
+.layout.carouselMode.expanded.cards-4{--expanded-width:1180px;}
+.layout.carouselMode.expanded.cards-5{--expanded-width:1460px;}
+.layout.carouselMode.expanded.cards-6{--expanded-width:1760px;}
+
+.layout.carouselMode.expanded .preview{
+  width:var(--expanded-width)!important;
+  min-width:var(--expanded-width)!important;
+}
+
+/* 카드 배율은 접어보기와 동일하게 유지 */
+.layout.carouselMode.expanded .card{
+  width:252px!important;
+  min-width:252px!important;
+}
+
+/* 6개 미만일 때 너무 오른쪽으로 비지 않도록 preview 내부 기준 정리 */
+.layout.carouselMode.expanded .track{
+  width:max-content!important;
+}
+
+/* 작은 화면에서는 설정 폭을 유지하고 가로 스크롤로 확인 */
+@media(max-width:1780px){
+  .layout.carouselMode.expanded{
+    grid-template-columns:var(--expanded-width)!important;
+    width:var(--expanded-width)!important;
+    max-width:var(--expanded-width)!important;
+  }
+  .layout.carouselMode.expanded .preview{
+    width:var(--expanded-width)!important;
+    min-width:var(--expanded-width)!important;
+  }
+}
+
+/* v29 responsive preview width */
+
+/* 브라우저 창이 넓어지면 전체 작업 영역도 함께 확장 */
+.app{
+  width:calc(100vw - 64px)!important;
+  max-width:1760px!important;
+}
+
+/* 기본 캐러셀 화면: 입력창은 고정, 미리보기는 남는 폭만큼 확장 */
+.layout.carouselMode:not(.expanded){
+  grid-template-columns:minmax(760px, 1fr) 400px!important;
+  width:100%!important;
+  max-width:1760px!important;
+}
+
+/* 기본 캐러셀 미리보기 폭도 grid에 맞춰 확장 */
+.layout.carouselMode:not(.expanded) .preview{
+  width:100%!important;
+  min-width:760px!important;
+}
+
+/* 펼쳐보기: 카드 개수별 필요 폭까지는 커지고, 창이 더 넓으면 화면 중앙에서 자연스럽게 보이도록 */
+.layout.carouselMode.expanded{
+  width:min(var(--expanded-width), calc(100vw - 64px))!important;
+  max-width:min(var(--expanded-width), calc(100vw - 64px))!important;
+  grid-template-columns:min(var(--expanded-width), calc(100vw - 64px))!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+  transform:none!important;
+}
+
+.layout.carouselMode.expanded .preview{
+  width:min(var(--expanded-width), calc(100vw - 64px))!important;
+  min-width:min(var(--expanded-width), calc(100vw - 64px))!important;
+}
+
+/* 창이 충분히 넓을 때는 카드 개수별 폭 그대로 사용 */
+@media(min-width:1780px){
+  .layout.carouselMode.expanded{
+    width:var(--expanded-width)!important;
+    max-width:var(--expanded-width)!important;
+    grid-template-columns:var(--expanded-width)!important;
+  }
+  .layout.carouselMode.expanded .preview{
+    width:var(--expanded-width)!important;
+    min-width:var(--expanded-width)!important;
+  }
+}
+
+/* 와이드 이미지형/리스트형은 기존 폭 유지하되 가운데 정렬 */
+.layout.singleMode,
+.layout.listMode{
+  max-width:920px!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
 }
