@@ -1,4 +1,5 @@
-Kakao Message Preview Multi Prototype v33
+Kakao Message Preview v34 Feedback Sample
 
-Toolbox 버튼 색상을 검은색 계열로 변경하고 메뉴 텍스트 볼드감을 낮췄습니다.
+카카오 메시지 미리보기 v33 기준으로 Toolbox에 Tally 피드백 링크를 추가했습니다.
+Tally URL: https://tally.so/r/q4oN9d
 업로드 파일: index.html, style.css, script.js

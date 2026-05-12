@@ -1178,3 +1178,13 @@ select{height:39px;padding:0 11px;font-size:13px}
 .toolbox-item.active:hover {
   color: #fff !important;
 }
+
+
+/* v34 feedback menu item */
+.toolbox-list {
+  gap: 8px !important;
+}
+
+.toolbox-item {
+  min-height: 46px !important;
+}
