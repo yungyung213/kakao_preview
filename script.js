@@ -405,15 +405,24 @@ function addCta(){
     return;
   }
 
+  if(!Array.isArray(c.ctas))c.ctas=[];
+  if(state.type==="carouselFeed")c.ctas=c.ctas.slice(0,2);
+
   if(c.ctas.length>=2){
     $("ctaField").classList.add("isErr","shake");
     setTimeout(()=>$("ctaField").classList.remove("shake"),420);
+    show("CTA는 최대 2개까지 추가할 수 있습니다.");
     return;
   }
 
   c.ctas.push(makeCta());
-  $("ctaField").classList.remove("isErr");
+  $("ctaField").classList.remove("isErr","shake");
   render();
+  setTimeout(()=>{
+    const blocks=document.querySelectorAll(".ctaBlock");
+    const last=blocks[blocks.length-1];
+    if(last)last.scrollIntoView({behavior:"smooth",block:"nearest"});
+  },30);
 }
 
 function removeCta(i){
@@ -457,7 +466,15 @@ document.querySelectorAll(".typeTab").forEach(b=>b.onclick=()=>{
 
 $("addCardBtn").onclick=addCard;
 $("removeCardBtn").onclick=removeCard;
-$("addCtaBtn").onclick=addCta;
+
+const addCtaButton=$("addCtaBtn");
+if(addCtaButton){
+  addCtaButton.onclick=(event)=>{
+    event.preventDefault();
+    addCta();
+  };
+}
+
 $("addListBtn").onclick=addListItem;
 $("allBtn").onclick=()=>{state.all=!state.all;render();};
 

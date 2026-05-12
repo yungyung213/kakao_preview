@@ -1188,3 +1188,15 @@ select{height:39px;padding:0 11px;font-size:13px}
 .toolbox-item {
   min-height: 46px !important;
 }
+
+
+/* v35 CTA add fix */
+.carouselMode #addCtaBtn {
+  display: inline-flex !important;
+  pointer-events: auto !important;
+  opacity: 1 !important;
+}
+
+.carouselMode #ctaField {
+  pointer-events: auto !important;
+}
