@@ -397,11 +397,10 @@ function removeCard(){
 
 function addCta(){
   const c=data();
-
   if(!c)return;
+
   if(!Array.isArray(c.ctas))c.ctas=[];
 
-  // 캐러셀 피드형은 CTA 버튼 최대 2개
   if(state.type==="carouselFeed"){
     c.ctaMode="link";
 
@@ -413,9 +412,7 @@ function addCta(){
     }
 
     c.ctas.push(makeCta());
-    state.cards[state.active]=c;
-    $("ctaField").classList.remove("isErr","shake");
-    renderForm();
+    renderCtas();
     renderPreview();
     renderDots();
 
@@ -423,13 +420,13 @@ function addCta(){
       const blocks=document.querySelectorAll(".ctaBlock");
       const last=blocks[blocks.length-1];
       if(last)last.scrollIntoView({behavior:"smooth",block:"nearest"});
-      const lastInput=last?last.querySelector(".ctaLabel"):null;
-      if(lastInput)lastInput.focus();
+      const input=last?last.querySelector(".ctaLabel"):null;
+      if(input)input.focus();
     },30);
+
     return;
   }
 
-  // 와이드 리스트형은 CTA 추가 버튼 사용하지 않음
   if(state.type==="wideList"){
     c.ctas=[c.ctas[0]||makeCta()];
     c.ctaMode="link";
@@ -437,7 +434,6 @@ function addCta(){
     return;
   }
 
-  // 와이드 이미지형은 링크 선택 시 1개 CTA만 사용
   c.ctaMode="link";
   if(c.ctas.length===0)c.ctas.push(makeCta());
   render();
@@ -485,27 +481,18 @@ document.querySelectorAll(".typeTab").forEach(b=>b.onclick=()=>{
 $("addCardBtn").onclick=addCard;
 $("removeCardBtn").onclick=removeCard;
 
-window.kakaoAddCtaFromButton=function(event){
-  if(event){
-    event.preventDefault();
-    event.stopPropagation();
-  }
-  addCta();
-};
-
-const addCtaButton=$("addCtaBtn");
-if(addCtaButton){
-  addCtaButton.onclick=window.kakaoAddCtaFromButton;
-}
-
+// CTA 추가 버튼 하드픽스: capture 단계에서 먼저 감지
 document.addEventListener("click",(event)=>{
-  const target=event.target.closest && event.target.closest("#addCtaBtn");
-  if(target){
-    event.preventDefault();
-    event.stopPropagation();
-    addCta();
-  }
-});
+  const btn=event.target.closest && event.target.closest("#addCtaBtn,[data-action='add-cta']");
+  if(!btn)return;
+
+  event.preventDefault();
+  event.stopPropagation();
+  event.stopImmediatePropagation();
+
+  addCta();
+},true);
+
 
 
 $("addListBtn").onclick=addListItem;

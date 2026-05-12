@@ -1190,25 +1190,16 @@ select{height:39px;padding:0 11px;font-size:13px}
 }
 
 
-/* v35 CTA add fix */
+/* v37 CTA button hard recheck */
+#addCtaBtn,
 .carouselMode #addCtaBtn {
   display: inline-flex !important;
   pointer-events: auto !important;
   opacity: 1 !important;
+  cursor: pointer !important;
 }
 
-.carouselMode #ctaField {
-  pointer-events: auto !important;
-}
-
-
-/* v36 CTA hard fix */
-.carouselMode #addCtaBtn,
-#addCtaBtn {
-  pointer-events: auto !important;
-}
-
-.carouselMode #ctaField,
-.carouselMode .ctaHeader {
+.ctaHeader,
+#ctaField {
   pointer-events: auto !important;
 }
