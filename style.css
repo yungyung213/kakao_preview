@@ -1190,7 +1190,7 @@ select{height:39px;padding:0 11px;font-size:13px}
 }
 
 
-/* v37 CTA button hard recheck */
+/* v40 clean CTA add/delete fix */
 #addCtaBtn,
 .carouselMode #addCtaBtn {
   display: inline-flex !important;
@@ -1199,7 +1199,53 @@ select{height:39px;padding:0 11px;font-size:13px}
   cursor: pointer !important;
 }
 
-.ctaHeader,
-#ctaField {
+#ctaForms .textBtn {
   pointer-events: auto !important;
+  cursor: pointer !important;
+}
+
+#ctaField,
+.ctaHeader,
+#ctaForms,
+.ctaBlock,
+.ctaBlockHead {
+  pointer-events: auto !important;
+}
+
+
+/* v42 CTA direct action fix */
+#addCtaBtn,
+.carouselMode #addCtaBtn {
+  display: inline-flex !important;
+  pointer-events: auto !important;
+  opacity: 1 !important;
+  cursor: pointer !important;
+}
+
+#ctaForms .textBtn {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+}
+
+
+/* v43 CTA click fix */
+#addCtaBtn,
+.carouselMode #addCtaBtn {
+  position: relative !important;
+  z-index: 10 !important;
+}
+
+#ctaField {
+  position: relative !important;
+  z-index: 5 !important;
+}
+
+.ctaHeader {
+  position: relative !important;
+  z-index: 10 !important;
+}
+
+/* textarea가 아래 요소를 덮지 못하도록 resize 차단 */
+.textareaBox textarea {
+  resize: none !important;
 }

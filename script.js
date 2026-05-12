@@ -33,6 +33,12 @@ let state={
   listImageTarget:null
 };
 
+
+state.cards.forEach(card=>{
+  card.ctaMode="link";
+  if(!Array.isArray(card.ctas)||card.ctas.length===0)card.ctas=[makeCta()];
+});
+
 function $(id){return document.getElementById(id)}
 function makeId(){return`card-${Date.now()}-${Math.random().toString(36).slice(2)}`}
 function makeCta(){return{label:"",url:""}}
@@ -48,7 +54,7 @@ function makeCard(index){
     ctas:[makeCta()],
     items:[makeList(),makeList(),makeList()],
     share:"no",
-    ctaMode:"none"
+    ctaMode:"link"
   }
 }
 function data(){return state.type==="carouselFeed"?state.cards[state.active]:state.single}
@@ -114,6 +120,16 @@ function imgHtml(c,wide=false){
 }
 
 function ctaHtml(c){
+  if(!c)return"";
+  if(!Array.isArray(c.ctas))c.ctas=[];
+
+  // 캐러셀 피드형은 CTA 버튼 1개를 기본으로 항상 노출
+  if(state.type==="carouselFeed"){
+    c.ctaMode="link";
+    if(c.ctas.length===0)c.ctas.push(makeCta());
+    return c.ctas.slice(0,2).map(x=>`<a class="cta ${isTooLong(x.label,MAX_BUTTON)?"previewOverText":""}" href="${esc(norm(x.url))}" target="_blank" rel="noopener noreferrer"><span>${esc(x.label||"버튼명")}</span></a>`).join("");
+  }
+
   if((c.ctaMode||"none")==="none")return"";
   const max=state.type==="wideList"?1:2;
   return c.ctas.slice(0,max).map(x=>`<a class="cta ${isTooLong(x.label,MAX_BUTTON)?"previewOverText":""}" href="${esc(norm(x.url))}" target="_blank" rel="noopener noreferrer"><span>${esc(x.label||"버튼명")}</span></a>`).join("");
@@ -234,13 +250,14 @@ function renderCtas(){
     $("ctaField").classList.remove("ctaFieldNoButton");
     $("ctaModeSelect").value="link";
     $("ctaForms").innerHTML=c.ctas.map((x,i)=>`<div class="ctaBlock">
-      <div class="ctaBlockHead"><strong>버튼 ${i+1}</strong><button type="button" class="textBtn" data-del="${i}">삭제</button></div>
+      <div class="ctaBlockHead"><strong>버튼 ${i+1}</strong><button type="button" class="textBtn" data-remove-cta="${i}">삭제</button></div>
       <div class="ctaGrid">
         <div class="inputBox"><input class="ctaLabel" data-i="${i}" placeholder="버튼명을 입력해주세요" value="${esc(x.label)}"><em>${textLen(x.label)}/${MAX_BUTTON}</em></div>
         <input class="ctaUrl" data-i="${i}" placeholder="https://" value="${esc(x.url)}">
       </div>
     </div>`).join("");
     bindCtaInputs(c);
+    bindCtaRemove();
     return;
   }
 
@@ -260,18 +277,18 @@ function renderCtas(){
   c.ctas=c.ctas.slice(0,max);
 
   $("ctaForms").innerHTML=c.ctas.map((x,i)=>`<div class="ctaBlock">
-    <div class="ctaBlockHead"><strong>버튼 ${i+1}</strong><button type="button" class="textBtn" data-del="${i}">삭제</button></div>
+    <div class="ctaBlockHead"><strong>버튼 ${i+1}</strong><button type="button" class="textBtn" data-remove-cta="${i}">삭제</button></div>
     <div class="ctaGrid">
       <div class="inputBox"><input class="ctaLabel" data-i="${i}" placeholder="버튼명을 입력해주세요" value="${esc(x.label)}"><em>${textLen(x.label)}/${MAX_BUTTON}</em></div>
       <input class="ctaUrl" data-i="${i}" placeholder="https://" value="${esc(x.url)}">
     </div>
   </div>`).join("");
   bindCtaInputs(c);
+  bindCtaRemove();
 }
 
 function bindCtaInputs(c){
-  document.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>removeCta(+b.dataset.del));
-  document.querySelectorAll(".ctaLabel").forEach(inp=>inp.oninput=()=>{
+document.querySelectorAll(".ctaLabel").forEach(inp=>inp.oninput=()=>{
     c.ctas[+inp.dataset.i].label=inp.value;
     inp.parentElement.querySelector("em").textContent=`${textLen(inp.value)}/${MAX_BUTTON}`;
     inp.closest(".ctaBlock").classList.toggle("over",textLen(inp.value)>MAX_BUTTON);
@@ -282,6 +299,17 @@ function bindCtaInputs(c){
     c.ctas[+inp.dataset.i].url=inp.value;
     renderPreview();
     renderDots();
+  });
+}
+
+function bindCtaRemove(){
+  // 이벤트 위임: ctaForms 컨테이너에 한 번만 등록, innerHTML 교체 후에도 유지
+  const forms=$("ctaForms");
+  if(!forms||forms._ctaRemoveBound)return;
+  forms._ctaRemoveBound=true;
+  forms.addEventListener("click",e=>{
+    const btn=e.target.closest("[data-remove-cta]");
+    if(btn)removeCta(+btn.dataset.removeCta);
   });
 }
 
@@ -398,7 +426,6 @@ function removeCard(){
 function addCta(){
   const c=data();
   if(!c)return;
-
   if(!Array.isArray(c.ctas))c.ctas=[];
 
   if(state.type==="carouselFeed"){
@@ -412,24 +439,26 @@ function addCta(){
     }
 
     c.ctas.push(makeCta());
+    $("ctaField").classList.remove("isErr","shake");
     renderCtas();
     renderPreview();
     renderDots();
 
     setTimeout(()=>{
-      const blocks=document.querySelectorAll(".ctaBlock");
+      const blocks=document.querySelectorAll("#ctaForms .ctaBlock");
       const last=blocks[blocks.length-1];
-      if(last)last.scrollIntoView({behavior:"smooth",block:"nearest"});
-      const input=last?last.querySelector(".ctaLabel"):null;
-      if(input)input.focus();
+      if(last){
+        last.scrollIntoView({behavior:"smooth",block:"nearest"});
+        const input=last.querySelector(".ctaLabel");
+        if(input)input.focus();
+      }
     },30);
-
     return;
   }
 
   if(state.type==="wideList"){
-    c.ctas=[c.ctas[0]||makeCta()];
     c.ctaMode="link";
+    c.ctas=[c.ctas[0]||makeCta()];
     render();
     return;
   }
@@ -441,16 +470,21 @@ function addCta(){
 
 function removeCta(i){
   const c=data();
+  if(!c || !Array.isArray(c.ctas))return;
+
   if(state.type==="carouselFeed"){
     if(c.ctas.length<=1){
       c.ctas=[makeCta()];
-      render();
-      return;
+    }else{
+      c.ctas.splice(i,1);
     }
-    c.ctas.splice(i,1);
-    render();
+    c.ctaMode="link";
+    renderCtas();
+    renderPreview();
+    renderDots();
     return;
   }
+
   c.ctas.splice(i,1);
   if(c.ctas.length===0)c.ctaMode="none";
   render();
@@ -480,20 +514,7 @@ document.querySelectorAll(".typeTab").forEach(b=>b.onclick=()=>{
 
 $("addCardBtn").onclick=addCard;
 $("removeCardBtn").onclick=removeCard;
-
-// CTA 추가 버튼 하드픽스: capture 단계에서 먼저 감지
-document.addEventListener("click",(event)=>{
-  const btn=event.target.closest && event.target.closest("#addCtaBtn,[data-action='add-cta']");
-  if(!btn)return;
-
-  event.preventDefault();
-  event.stopPropagation();
-  event.stopImmediatePropagation();
-
-  addCta();
-},true);
-
-
+$("addCtaBtn").onclick=addCta;
 
 $("addListBtn").onclick=addListItem;
 $("allBtn").onclick=()=>{state.all=!state.all;render();};
