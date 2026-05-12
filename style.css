@@ -2,7 +2,7 @@
 html,body{margin:0;min-height:100%;background:#eef3f9;color:#0f172a;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans KR",Arial,"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif}
 button,input,textarea,select{font:inherit}
 button{cursor:pointer}
-.app{width:100%;max-width:1180px;margin:0 auto;padding:28px 20px 32px}
+.app{width:100%;max-width:1180px;margin:0 auto;padding:28px 24px 32px;overflow-x:hidden}
 .header{text-align:center;margin:0 0 18px}
 .header h1{margin:0;font-size:24px;line-height:1.25;font-weight:900;letter-spacing:-.6px}
 .header p{margin:10px 0 0;color:#64748b;font-size:13px}
@@ -10,7 +10,7 @@ button{cursor:pointer}
 .typeTab{height:38px;border:0;border-radius:999px;background:#e6edf5;color:#475569;padding:0 18px;font-size:13px;font-weight:900}
 .typeTab.active{background:#0f172a;color:#fff}
 
-.layout{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:20px;align-items:start}
+.layout{display:grid;grid-template-columns:1fr 380px;gap:20px;align-items:start}
 .layout.singleMode,.layout.listMode{grid-template-columns:420px 430px;gap:36px;justify-content:center}
 
 .preview{position:relative;background:#c9d5e2;border-radius:18px;min-height:650px;padding:20px 22px 18px;overflow:hidden}
@@ -73,8 +73,8 @@ button{cursor:pointer}
 .shareBtn{height:34px;border:1px solid #e5e7eb;border-radius:8px;background:#f8fafc;display:flex;align-items:center;justify-content:center;font-size:13px}
 
 /* form */
-.formPanel{background:#fff;border-radius:18px;padding:16px;box-shadow:0 1px 2px rgba(15,23,42,.08);width:400px}
-.layout.singleMode .formPanel,.layout.listMode .formPanel{width:430px}
+.formPanel{background:#fff;border-radius:18px;padding:16px;box-shadow:0 1px 2px rgba(15,23,42,.08);width:100%}
+.layout.singleMode .formPanel,.layout.listMode .formPanel{width:100%}
 .formActions{display:flex;justify-content:flex-end;gap:8px;margin-bottom:12px}
 .formActions.hidden{display:none}
 .btn{height:36px;border-radius:10px;border:0;padding:0 14px;font-size:12px;font-weight:900;display:inline-flex;align-items:center;justify-content:center;line-height:1;min-width:110px}
