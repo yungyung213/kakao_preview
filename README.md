@@ -1,12 +1,12 @@
-Kakao Message Preview v44 CTA Fix
+Kakao Message Preview v45 CTA Fix
 
-초기 캐러셀 피드형 미리보기 CTA 1개 기본 노출, + CTA 추가 버튼 직접 실행, CTA 삭제 버튼 직접 실행 방식으로 수정했습니다. Toolbox 메뉴명은 문자 미리보기로 유지됩니다.
+v45 변경사항:
+- style.css: v40/v42/v43에서 중복 추가된 CTA CSS 규칙 충돌 제거, v45 단일 규칙으로 통합
+  - .carouselMode #addCtaBtn 에만 display:inline-flex 적용 (이전엔 #addCtaBtn 단독 규칙이 다른 타입에서 충돌)
+  - textarea resize:none 유지
+- script.js, index.html: v44 수정 그대로 유지 (이미 올바름)
 
-v44 변경사항:
-- script.js: makeCard()에서 ctaMode를 "none" → "link"로 초기화
-  (새 카드 추가 시 CTA 버튼이 즉시 표시되지 않던 문제 해결)
-- script.js: bindCtaRemove()를 이벤트 위임(event delegation) 방식으로 교체
-  (renderCtas()가 innerHTML을 교체할 때마다 삭제 버튼 바인딩이 끊기던 문제 해결)
-  ctaForms 컨테이너에 한 번만 click 리스너를 등록하므로 render 후에도 항상 작동
+배포 시 브라우저 캐시 문제로 변경이 안 보일 수 있습니다.
+GitHub에 push 후 브라우저에서 Ctrl+Shift+R (강력 새로고침) 해주세요.
 
 업로드 파일: index.html, style.css, script.js
