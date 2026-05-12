@@ -1,4 +1,4 @@
-Kakao Message Preview v35 Feedback CTA Fix
+Kakao Message Preview v36 CTA Hard Fix
 
-v34 피드백 적용본 기준으로 캐러셀 피드형 + CTA 추가 버튼 동작을 보강했습니다. CTA는 최대 2개까지 추가되며 초과 시 안내가 표시됩니다.
++ CTA 추가 버튼을 인라인 핸들러, 직접 onclick, 이벤트 위임 방식으로 재연결했습니다. 캐러셀 피드형에서는 render 전체 초기화 대신 renderForm/renderPreview/renderDots만 갱신합니다.
 업로드 파일: index.html, style.css, script.js

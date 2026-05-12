@@ -397,32 +397,50 @@ function removeCard(){
 
 function addCta(){
   const c=data();
-  c.ctaMode="link";
 
+  if(!c)return;
+  if(!Array.isArray(c.ctas))c.ctas=[];
+
+  // 캐러셀 피드형은 CTA 버튼 최대 2개
+  if(state.type==="carouselFeed"){
+    c.ctaMode="link";
+
+    if(c.ctas.length>=2){
+      $("ctaField").classList.add("isErr","shake");
+      setTimeout(()=>$("ctaField").classList.remove("shake"),420);
+      show("CTA는 최대 2개까지 추가할 수 있습니다.");
+      return;
+    }
+
+    c.ctas.push(makeCta());
+    state.cards[state.active]=c;
+    $("ctaField").classList.remove("isErr","shake");
+    renderForm();
+    renderPreview();
+    renderDots();
+
+    setTimeout(()=>{
+      const blocks=document.querySelectorAll(".ctaBlock");
+      const last=blocks[blocks.length-1];
+      if(last)last.scrollIntoView({behavior:"smooth",block:"nearest"});
+      const lastInput=last?last.querySelector(".ctaLabel"):null;
+      if(lastInput)lastInput.focus();
+    },30);
+    return;
+  }
+
+  // 와이드 리스트형은 CTA 추가 버튼 사용하지 않음
   if(state.type==="wideList"){
     c.ctas=[c.ctas[0]||makeCta()];
+    c.ctaMode="link";
     render();
     return;
   }
 
-  if(!Array.isArray(c.ctas))c.ctas=[];
-  if(state.type==="carouselFeed")c.ctas=c.ctas.slice(0,2);
-
-  if(c.ctas.length>=2){
-    $("ctaField").classList.add("isErr","shake");
-    setTimeout(()=>$("ctaField").classList.remove("shake"),420);
-    show("CTA는 최대 2개까지 추가할 수 있습니다.");
-    return;
-  }
-
-  c.ctas.push(makeCta());
-  $("ctaField").classList.remove("isErr","shake");
+  // 와이드 이미지형은 링크 선택 시 1개 CTA만 사용
+  c.ctaMode="link";
+  if(c.ctas.length===0)c.ctas.push(makeCta());
   render();
-  setTimeout(()=>{
-    const blocks=document.querySelectorAll(".ctaBlock");
-    const last=blocks[blocks.length-1];
-    if(last)last.scrollIntoView({behavior:"smooth",block:"nearest"});
-  },30);
 }
 
 function removeCta(i){
@@ -467,13 +485,28 @@ document.querySelectorAll(".typeTab").forEach(b=>b.onclick=()=>{
 $("addCardBtn").onclick=addCard;
 $("removeCardBtn").onclick=removeCard;
 
+window.kakaoAddCtaFromButton=function(event){
+  if(event){
+    event.preventDefault();
+    event.stopPropagation();
+  }
+  addCta();
+};
+
 const addCtaButton=$("addCtaBtn");
 if(addCtaButton){
-  addCtaButton.onclick=(event)=>{
-    event.preventDefault();
-    addCta();
-  };
+  addCtaButton.onclick=window.kakaoAddCtaFromButton;
 }
+
+document.addEventListener("click",(event)=>{
+  const target=event.target.closest && event.target.closest("#addCtaBtn");
+  if(target){
+    event.preventDefault();
+    event.stopPropagation();
+    addCta();
+  }
+});
+
 
 $("addListBtn").onclick=addListItem;
 $("allBtn").onclick=()=>{state.all=!state.all;render();};
