@@ -1034,7 +1034,7 @@ select{height:39px;padding:0 11px;font-size:13px}
 }
 
 .toolbox-list {
-  display: flex;
+  display: none;
   flex-direction: column;
   gap: 8px;
   opacity: 0;
@@ -1044,6 +1044,7 @@ select{height:39px;padding:0 11px;font-size:13px}
 }
 
 .toolbox.open .toolbox-list {
+  display: flex;
   opacity: 1;
   transform: translateY(0) scale(1);
   pointer-events: auto;
