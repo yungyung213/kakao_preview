@@ -541,3 +541,29 @@ document.addEventListener("click",e=>{
 });
 
 render();
+
+
+// v32 Toolbox toggle
+const toolbox = document.getElementById("toolbox");
+const toolboxToggle = document.getElementById("toolboxToggle");
+
+if (toolbox && toolboxToggle) {
+  toolboxToggle.addEventListener("click", () => {
+    const isOpen = toolbox.classList.toggle("open");
+    toolboxToggle.setAttribute("aria-expanded", String(isOpen));
+  });
+
+  document.addEventListener("click", (event) => {
+    if (!toolbox.contains(event.target)) {
+      toolbox.classList.remove("open");
+      toolboxToggle.setAttribute("aria-expanded", "false");
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      toolbox.classList.remove("open");
+      toolboxToggle.setAttribute("aria-expanded", "false");
+    }
+  });
+}
