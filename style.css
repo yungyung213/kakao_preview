@@ -10,7 +10,7 @@ button{cursor:pointer}
 .typeTab{height:38px;border:0;border-radius:999px;background:#e6edf5;color:#475569;padding:0 18px;font-size:13px;font-weight:900}
 .typeTab.active{background:#0f172a;color:#fff}
 
-.layout{display:grid;grid-template-columns:760px 400px;gap:20px;align-items:start}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:20px;align-items:start}
 .layout.singleMode,.layout.listMode{grid-template-columns:420px 430px;gap:36px;justify-content:center}
 
 .preview{position:relative;background:#c9d5e2;border-radius:18px;min-height:650px;padding:20px 22px 18px;overflow:hidden}
@@ -154,7 +154,7 @@ select{height:39px;padding:0 11px;font-size:13px}
 .toast{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);display:none;background:#111827;color:#fff;border-radius:14px;padding:12px 16px;font-size:13px;font-weight:800;z-index:50}
 .toast.show{display:block}
 
-@media(max-width:1280px){
+@media(max-width:900px){
   .app{width:100%;padding:20px 12px}
   .layout,.layout.singleMode,.layout.listMode{grid-template-columns:1fr}
   .preview,.formPanel,.layout.singleMode .formPanel,.layout.listMode .formPanel{width:100%}
@@ -823,7 +823,7 @@ select{height:39px;padding:0 11px;font-size:13px}
 
 /* 기본 캐러셀 화면: 입력창은 고정, 미리보기는 남는 폭만큼 확장 */
 .layout.carouselMode:not(.expanded){
-  grid-template-columns:minmax(760px, 1fr) 400px!important;
+  grid-template-columns:minmax(0,1fr) 400px!important;
   width:100%!important;
   max-width:1760px!important;
 }
