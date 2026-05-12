@@ -2,7 +2,7 @@
 html,body{margin:0;min-height:100%;background:#eef3f9;color:#0f172a;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans KR",Arial,"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif}
 button,input,textarea,select{font:inherit}
 button{cursor:pointer}
-.app{width:1180px;margin:0 auto;padding:28px 0 32px}
+.app{width:100%;max-width:1180px;margin:0 auto;padding:28px 20px 32px}
 .header{text-align:center;margin:0 0 18px}
 .header h1{margin:0;font-size:24px;line-height:1.25;font-weight:900;letter-spacing:-.6px}
 .header p{margin:10px 0 0;color:#64748b;font-size:13px}
@@ -154,7 +154,7 @@ select{height:39px;padding:0 11px;font-size:13px}
 .toast{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);display:none;background:#111827;color:#fff;border-radius:14px;padding:12px 16px;font-size:13px;font-weight:800;z-index:50}
 .toast.show{display:block}
 
-@media(max-width:1260px){
+@media(max-width:1280px){
   .app{width:100%;padding:20px 12px}
   .layout,.layout.singleMode,.layout.listMode{grid-template-columns:1fr}
   .preview,.formPanel,.layout.singleMode .formPanel,.layout.listMode .formPanel{width:100%}
